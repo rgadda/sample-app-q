@@ -1,0 +1,30 @@
+{
+  "name": "sample-app-q",
+  "version": "1.0.0",
+  "description": "sample test code",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rgadda/sample-app-q.git"
+  },
+  "author": "rajiv gadda",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rgadda/sample-app-q/issues"
+  },
+  "homepage": "https://github.com/rgadda/sample-app-q#readme",
+  "dependencies": {
+    "@alpacahq/alpaca-trade-api": "^1.2.9",
+    "amqp-connection-manager": "^3.2.0",
+    "amqplib": "^0.5.5",
+    "cron": "^1.8.2",
+    "lodash": "^4.17.15",
+    "moment": "^2.24.0",
+    "node-fetch": "^2.6.0",
+    "polygon.io": "^1.0.0",
+    "technicalindicators": "^3.1.0"
+  }
+}
