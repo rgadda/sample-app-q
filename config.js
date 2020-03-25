@@ -10,7 +10,11 @@ module.exports = {
             },
             qty: 1,
             target: 2
-        },
+        }
+    }
+}
+/**
+ * ,
         SPY: {
             minutes: 5,
             rule: {
@@ -102,4 +106,4 @@ module.exports = {
             target: 2
         }
     }
-}
+ */
