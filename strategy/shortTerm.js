@@ -13,16 +13,15 @@ const alpaca = new Alpaca({
 });
 
 const buySellSignal = (data, config) => {
-    // console.time("HA Perf")
-
-    const heikinashiInput = _.reduce(data, (acc, candle) => {
+    const input = _.reduce(data, (acc, candle) => {
         return {
             open: [...acc.open, candle.o],
             close: [...acc.close, candle.c],
             low: [...acc.low, candle.l],
             high: [...acc.high, candle.h],
             volume: [...acc.volume, candle.v],
-            timestamp: [...acc.timestamp, candle.t]
+            timestamp: [...acc.timestamp, candle.t],
+            period: acc.period
         }
     }, {
         open: [],
@@ -31,15 +30,10 @@ const buySellSignal = (data, config) => {
         high: [],
         volume: [],
         timestamp: [],
-        period: 20
-    })
-
-    const HA = new TI.HeikinAshi(heikinashiInput)
-    const CCI = new TI.CCI(heikinashiInput)
+        period: 60
+    });
+    const CCI = new TI.CCI(input)
     const CCIResult = CCI.getResult()
-    const haData = HA.getResult().close;
-    const openEMA = TI.EMA.calculate({ period: config.open, values: haData });
-    const closeEMA = TI.EMA.calculate({ period: config.close, values: haData });
 
     if (CCIResult[CCIResult.length - 1] > 100 && CCIResult[CCIResult.length - 2] < 100) {
         // go long
@@ -51,15 +45,6 @@ const buySellSignal = (data, config) => {
         return "goshort"
     }
 
-    // if (haData[haData.length - 1] > openEMA[openEMA.length - 1] && haData[haData.length - 2] < openEMA[openEMA.length - 2]) {
-    //     console.log(haData[haData.length - 1], openEMA[openEMA.length - 1], haData[haData.length - 2], openEMA[openEMA.length - 2])
-    //     return "golong"
-    // }
-
-    // if (haData[haData.length - 1] < closeEMA[closeEMA.length - 1] && haData[haData.length - 2] > closeEMA[closeEMA.length - 2]) {
-    //     console.log(haData[haData.length - 1], openEMA[openEMA.length - 1], haData[haData.length - 2], openEMA[openEMA.length - 2])
-    //     return "goshort"
-    // }
     return "wait"
 }
 
@@ -101,7 +86,6 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 const run = async (skipClosing = false) => {
     const beginningTime = moment('9:30am', 'h:mma');
     const endTime = moment('4:00pm', 'h:mma');
-    console.log("here")
     if (!skipClosing && (moment().isBefore(beginningTime) || moment().isAfter(endTime))) {
         console.log(`market closed`)
         return;
@@ -110,7 +94,6 @@ const run = async (skipClosing = false) => {
     console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
     _.forEach(_.keys(config.tradeableAssets), async (symbol) => {
         let dataset = await helperFunctions.getData(symbol, config.tradeableAssets[symbol].minutes);
-        console.log(dataset)
         if (dataset.results.length < 10 || parseInt(dataset.results[dataset.results.length - 1].diff) > config.tradeableAssets[symbol].minutes + 1) {
             console.log(`No data for ${symbol}`)
             return;
@@ -144,4 +127,4 @@ module.exports = {
     test: test,
     run: run
 }
-// run(true)
+run(true)
