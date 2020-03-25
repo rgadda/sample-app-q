@@ -1,7 +1,5 @@
 
 const amqp = require('amqp-connection-manager')
-const strat1 = require('./strategy/strat1')
-const strat2 = require('./strategy/strat2')
 const shortTerm = require('./strategy/shortTerm')
 const moment = require("moment")
 
@@ -61,18 +59,6 @@ function onMessage(data) {
     }
 
     switch (message.taskName) {
-        case 'strategy 1':
-            // do something....
-            console.log(`${message.taskName} is being executed`)
-            strat1.run();
-            break
-
-        case 'strategy 2':
-            // do another thing....
-            console.log(`${message.taskName} is being executed`)
-            strat2.run();
-            break
-
         case 'short term':
             // do another thing....
             console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`)
