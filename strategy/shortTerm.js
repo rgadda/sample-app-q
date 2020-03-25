@@ -32,7 +32,9 @@ const buySellSignal = (data, config) => {
         timestamp: [],
         period: 60
     });
-    const CCI = new TI.CCI(input)
+    const HA = new TI.HeikinAshi(input)
+    const CCIInput = { ...HA.getResult(), period: 60 }
+    const CCI = new TI.CCI(CCIInput)
     const CCIResult = CCI.getResult()
 
     if (CCIResult[CCIResult.length - 1] > 100 && CCIResult[CCIResult.length - 2] < 100) {
@@ -127,4 +129,4 @@ module.exports = {
     test: test,
     run: run
 }
-run(true)
+// run(true)
