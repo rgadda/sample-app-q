@@ -4,8 +4,8 @@ const polygon = require("../polygon")
 
 const Alpaca = require('@alpacahq/alpaca-trade-api');
 const alpaca = new Alpaca({
-    keyId: config.API_KEY,
-    secretKey: config.API_SECRET,
+    keyId: process.env.ALPACA_KEY || require("../envVar").API_KEY,
+    secretKey: process.env.ALPACA_KEY || require("../envVar").API_SECRET,
     paper: config.PAPER
 });
 // Add time diff between last candle and current epoch time

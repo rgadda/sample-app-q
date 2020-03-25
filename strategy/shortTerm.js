@@ -7,8 +7,8 @@ const TI = require('technicalindicators');
 
 // alpaca trade api connector
 const alpaca = new Alpaca({
-    keyId: config.API_KEY,
-    secretKey: config.API_SECRET,
+    keyId: process.env.ALPACA_KEY || require("../envVar").API_KEY,
+    secretKey: process.env.ALPACA_KEY || require("../envVar").API_SECRET,
     paper: config.PAPER
 });
 

@@ -1,15 +1,15 @@
-const config = require("./config")
 const fetch = require('node-fetch');
 const moment = require("moment");
 const EMA = require('technicalindicators').EMA;
 const _ = require("lodash")
 const TI = require('technicalindicators');
+const POLYGON_KEY = process.env.POLYGON_KEY || require("./envVar").polygon.key
 
 
 const getMinuteData = (symbol, interval) => {
     const today = moment().subtract(1, 'day').format('YYYY-MM-DD');
     const tomorrow = moment().add(1, 'day').format('YYYY-MM-DD');
-    return fetch(`${config.polygon.apiUrl}/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?unadjusted=true&apiKey=${config.polygon.key}&limit=45`)
+    return fetch(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?unadjusted=true&apiKey=${POLYGON_KEY}&limit=45`)
         .then(async res => {
             const jsonObj = await res.json();
             if (!jsonObj.results) {
