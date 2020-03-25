@@ -3,7 +3,7 @@ const moment = require("moment");
 const EMA = require('technicalindicators').EMA;
 const _ = require("lodash")
 const TI = require('technicalindicators');
-const POLYGON_KEY = process.env.POLYGON_KEY || require("./envVar").polygon.key
+const POLYGON_KEY = process.env.POLYGON_KEY
 
 
 const getMinuteData = (symbol, interval) => {
