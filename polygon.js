@@ -5,11 +5,11 @@ const _ = require("lodash")
 const TI = require('technicalindicators');
 const POLYGON_KEY = process.env.POLYGON_KEY
 
-
 const getMinuteData = (symbol, interval) => {
     const today = moment().subtract(1, 'day').format('YYYY-MM-DD');
     const tomorrow = moment().add(1, 'day').format('YYYY-MM-DD');
-    return fetch(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?unadjusted=true&apiKey=${POLYGON_KEY}&limit=100`)
+    // console.log(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?unadjusted=true&apiKey=${POLYGON_KEY}&limit=100`)
+    return fetch(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?apiKey=${POLYGON_KEY}&resultsCount=100`)
         .then(async res => {
             const jsonObj = await res.json();
             if (!jsonObj.results) {
@@ -49,7 +49,7 @@ const test = async () => {
         volume: [],
         timestamp: []
     })
-
+    console.log(data)
     const HA = new TI.HeikinAshi(heikinashiInput)
 
     console.log(HA.getResult().close.length);

@@ -68,19 +68,6 @@ function onMessage(data) {
             shortTerm.run()
             break
 
-        case 'short term - measure performance':
-            console.log(`${message.taskName} is being executed`)
-            console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`)
-            shortTerm.parseDaysPerformance()
-            console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`)
-            break;
-
-        case 'cron test':
-            console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`)
-            console.log(`Time: ${moment().format()}`)
-            console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`)
-            break;
-
         default:
             console.error('No task was found with name => ' + message.taskName)
     }
