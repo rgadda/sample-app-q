@@ -64,34 +64,31 @@ async function actOnSignal(signal, symbol, qty, side = false) {
     // console.log(`Signal for ${symbol}: ${signal}`)
     switch (signal) {
         case "goshort":
-            helperFunctions.submitOrder(qty, symbol, "sell");
-            // if (side !== "short") {
-            //     await alpaca.closePosition(symbol)
-            //         .then(async (resp) => {
-            //             console.log(`Closed your ${side} position in ${symbol}`);
-            //             console.log('placing short order');
-            //             setTimeout(() => { helperFunctions.submitOrder(qty, symbol, "sell", true); }, 500);
-            //         }).catch(async (err) => {
-            //             await helperFunctions.submitOrder(qty, symbol, "sell");
-            //         });
-            // } else {
-            //     !side ? console.log(`Wait for the right trade in ${symbol}`) : console.log(`Hold your ${side} position in ${symbol}`);
-            // }
+            if (side !== "short") {
+                await alpaca.closePosition(symbol)
+                    .then(async (resp) => {
+                        console.log(`Closed your ${side} position in ${symbol}`);
+                        console.log('placing short order');
+                        setTimeout(() => { helperFunctions.submitOrder(qty, symbol, "sell", true); }, 500);
+                    }).catch(async (err) => {
+                        await helperFunctions.submitOrder(qty, symbol, "sell");
+                    });
+            } else {
+                !side ? console.log(`Wait for the right trade in ${symbol}`) : console.log(`Hold your ${side} position in ${symbol}`);
+            }
             break;
         case "golong":
-            helperFunctions.submitOrder(qty, symbol, "buy");
-            // if (side !== "long") {
-            //     await alpaca.closePosition(symbol).then(async (resp) => {
-            //         console.log(`Closed your ${side} position in ${symbol}`);
-            //         console.log(`placing long order`);
-            //         setTimeout(() => { helperFunctions.submitOrder(qty, symbol, "buy", true); }, 500);
-            //     }).catch(async (err) => {
-            //         await helperFunctions.submitOrder(qty, symbol, "buy");
-            //     });
-            // } else {
-            //     !side ? console.log(`Wait for the right trade in ${symbol}`) : console.log(`Hold your ${side} position in ${symbol}`);
-            // }
-
+            if (side !== "long") {
+                await alpaca.closePosition(symbol).then(async (resp) => {
+                    console.log(`Closed your ${side} position in ${symbol}`);
+                    console.log(`placing long order`);
+                    setTimeout(() => { helperFunctions.submitOrder(qty, symbol, "buy", true); }, 500);
+                }).catch(async (err) => {
+                    await helperFunctions.submitOrder(qty, symbol, "buy");
+                });
+            } else {
+                !side ? console.log(`Wait for the right trade in ${symbol}`) : console.log(`Hold your ${side} position in ${symbol}`);
+            }
             break;
 
         case "closelong":
