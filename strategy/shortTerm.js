@@ -39,21 +39,25 @@ const buySellSignal = (data, config) => {
 
     if (CCIResult[CCIResult.length - 1] > 100 && CCIResult[CCIResult.length - 2] < 100) {
         // go long
+        console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
         return "golong"
     }
 
     if (CCIResult[CCIResult.length - 1] < 100 && CCIResult[CCIResult.length - 2] > 100) {
         // go long
+        console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
         return "closelong"
     }
 
     if (CCIResult[CCIResult.length - 1] < -100 && CCIResult[CCIResult.length - 2] > -100) {
         // go short
+        console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
         return "goshort"
     }
 
     if (CCIResult[CCIResult.length - 1] > -100 && CCIResult[CCIResult.length - 2] < -100) {
         // go short
+        console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
         return "closeshort"
     }
 
