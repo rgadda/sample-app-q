@@ -33,7 +33,7 @@ const buySellSignal = (data, config) => {
         period: 60
     });
     const HA = new TI.HeikinAshi(input)
-    const CCIInput = { ...HA.getResult(), period: 60 }
+    const CCIInput = { ...HA.getResult(), period: 20 }
     const CCI = new TI.CCI(CCIInput)
     const CCIResult = CCI.getResult()
     console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
