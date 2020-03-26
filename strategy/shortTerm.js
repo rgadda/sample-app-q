@@ -121,6 +121,7 @@ const run = async (skipClosing = false) => {
         const qty = config.tradeableAssets[symbol].qty;
         // console.log(`Data.lenght: ${ dataset.results.length } `)
         const signal = buySellSignal(dataset.results, config.tradeableAssets[symbol].rule);
+        console.log(`****** Signal: ${signal}`)
         alpaca.getPosition(symbol).then(async (position) => {
             console.log(`Gain/Loss in ${symbol}:`, position.unrealized_pl)
             if (Number(position.unrealized_pl) >= config.tradeableAssets[symbol].target) {
