@@ -37,7 +37,7 @@ const buySellSignal = (data, config) => {
     const CCI = new TI.CCI(CCIInput)
     const CCIResult = CCI.getResult()
     console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
-    if (CCIResult[CCIResult.length - 1] > 100 && CCIResult[CCIResult.length - 2] < 100) {
+    if (CCIResult[CCIResult.length - 1] > 0 && CCIResult[CCIResult.length - 2] < 0) {
         // go long
         return "golong"
     }
@@ -47,7 +47,7 @@ const buySellSignal = (data, config) => {
         return "closelong"
     }
 
-    if (CCIResult[CCIResult.length - 1] < -100 && CCIResult[CCIResult.length - 2] > -100) {
+    if (CCIResult[CCIResult.length - 1] < 0 && CCIResult[CCIResult.length - 2] > 0) {
         // go short
         return "goshort"
     }
