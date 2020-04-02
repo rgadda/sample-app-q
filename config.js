@@ -8,7 +8,7 @@ module.exports = {
                 open: 5,
                 close: 5
             },
-            qty: 1,
+            qty: 10,
             target: 200
         }
     }
