@@ -30,7 +30,7 @@ const buySellSignal = (data, config) => {
         high: [],
         volume: [],
         timestamp: [],
-        period: 60
+        period: 30
     });
     const HA = new TI.HeikinAshi(input)
     const CCIInput = { ...HA.getResult(), period: 20 }
