@@ -100,7 +100,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 }
 
 const run = async (skipClosing = false) => {
-    const beginningTime = moment('9:30am', 'h:mma');
+    const beginningTime = moment('9:40am', 'h:mma');
     const endTime = moment('4:00pm', 'h:mma');
     if (!skipClosing && (moment().isBefore(beginningTime) || moment().isAfter(endTime))) {
         console.log(`market closed`)
