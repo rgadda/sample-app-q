@@ -124,7 +124,7 @@ const run = async (skipClosing = false) => {
         console.log(`****** Signal: ${signal}`)
         alpaca.getPosition(symbol).then(async (position) => {
             console.log(`Gain/Loss in ${symbol}:`, position.unrealized_pl)
-            if (Number(position.unrealized_pl) >= config.tradeableAssets[symbol].target) {
+            if (Number(position.unrealized_pl) >= parseInt(config.tradeableAssets[symbol].target * config.tradeableAssets[symbol].qty)) {
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
