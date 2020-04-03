@@ -9,7 +9,7 @@ module.exports = {
                 close: 5
             },
             qty: 10,
-            target: 200
+            target: 1
         }
     }
 }
