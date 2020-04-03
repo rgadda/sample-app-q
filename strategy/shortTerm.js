@@ -92,7 +92,11 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 
         case "closelong":
         case "closeshort":
-            await alpaca.closePosition(symbol)
+            await alpaca.closePosition(symbol).then(async (resp) => {
+                console.log(`Closed your ${side} position in ${symbol}`);
+            }).catch(async (err) => {
+                console.log(`No position to close ${side} in ${symbol}`)
+            });
             break;
         default:
             !side ? console.log(`Wait for the right trade in ${symbol}`) : console.log(`Hold your ${side} position in ${symbol}`);
