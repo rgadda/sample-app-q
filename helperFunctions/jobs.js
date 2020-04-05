@@ -41,7 +41,7 @@ const jobs = [
     {
         name: "Implementing Short Term Strategy",
         message: { "taskName": "short term", "queue": "worker-queue" },  // message in json format
-        cronTime: "*/1 * * * *",
+        cronTime: "*/1 9-17 * * 1-5",
         repeat: 1
     }
 ];
