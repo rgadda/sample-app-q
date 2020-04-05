@@ -12,7 +12,7 @@ const alpaca = new Alpaca({
     paper: config.PAPER
 });
 
-const buySellSignal = (data, config) => {
+const buySellSignal = (data) => {
     const input = _.reduce(data, (acc, candle) => {
         return {
             open: [...acc.open, candle.o],
@@ -32,31 +32,25 @@ const buySellSignal = (data, config) => {
         timestamp: []
     });
     const HA = new TI.HeikinAshi(input)
-    const CCIInput = { ...HA.getResult(), period: 60 }
-    const CCI = new TI.CCI(CCIInput)
-    const CCIResult = CCI.getResult()
-    console.log(`CCI: ${CCIResult[CCIResult.length - 1]} and ${CCIResult[CCIResult.length - 2]}`)
-    if (CCIResult[CCIResult.length - 1] > 0 && CCIResult[CCIResult.length - 2] < 0) {
-        // go long
-        return "golong"
-    }
+    const macd = new TI.MACD({
+        values: HA.getResult().close,
+        fastPeriod: 12,
+        slowPeriod: 26,
+        signalPeriod: 9,
+        SimpleMAOscillator: true,
+        SimpleMASignal: true
+    }).getResult()
 
-    if (CCIResult[CCIResult.length - 1] < 100 && CCIResult[CCIResult.length - 2] > 100) {
-        // go long
-        return "closelong"
+    const histogram1 = macd[macd.length - 1].histogram;
+    const histogram2 = macd[macd.length - 2].histogram;
+    console.log(histogram1, histogram2)
+    if (histogram1 > 0 && histogram2 < 0) {
+        return 'golong'
     }
-
-    if (CCIResult[CCIResult.length - 1] < 0 && CCIResult[CCIResult.length - 2] > 0) {
-        // go short
-        return "goshort"
+    if (histogram1 < 0 && histogram2 > 0) {
+        return 'goshort'
     }
-
-    if (CCIResult[CCIResult.length - 1] > -100 && CCIResult[CCIResult.length - 2] < -100) {
-        // go short
-        return "closeshort"
-    }
-
-    return "wait"
+    return 'wait'
 }
 
 async function actOnSignal(signal, symbol, qty, side = false) {
@@ -105,10 +99,16 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 
 const run = async (skipClosing = false) => {
     const beginningTime = moment('9:40am', 'h:mma');
-    const endTime = moment('4:00pm', 'h:mma');
-    if (!skipClosing && (moment().isBefore(beginningTime) || moment().isAfter(endTime))) {
+    const stopTrading = moment('3:50pm', 'h:mma');
+    const endTime = moment('3:45pm', 'h:mma');
+    if (!skipClosing && (moment().isBefore(beginningTime) || moment().isAfter(stopTrading))) {
         console.log(`market closed`)
         return;
+    }
+    if (!skipClosing && (moment().isBefore(endTime) || moment().isAfter(stopTrading))) {
+        alpaca.closeAllPositions().catch(err => {
+            console.log(err)
+        })
     }
     const account = await alpaca.getAccount()
     console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
@@ -120,7 +120,7 @@ const run = async (skipClosing = false) => {
         }
         const qty = config.tradeableAssets[symbol].qty;
         // console.log(`Data.lenght: ${ dataset.results.length } `)
-        const signal = buySellSignal(dataset.results, config.tradeableAssets[symbol].rule);
+        const signal = buySellSignal(dataset.results);
         console.log(`****** Signal: ${signal}`)
         alpaca.getPosition(symbol).then(async (position) => {
             console.log(`Gain/Loss in ${symbol}:`, position.unrealized_pl)
