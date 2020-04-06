@@ -26,11 +26,6 @@ module.exports = {
             minutes: 1,
             qty: 15,
             target: 0.5
-        },
-        SPY: {
-            minutes: 1,
-            qty: 20,
-            target: 0.25
         }
     }
 }
