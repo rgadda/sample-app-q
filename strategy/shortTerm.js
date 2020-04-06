@@ -58,6 +58,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
     switch (signal) {
         case "goshort":
             if (side !== "short") {
+                console.log("close 1")
                 await alpaca.closePosition(symbol)
                     .then(async (resp) => {
                         console.log(`Closed your ${side} position in ${symbol}`);
@@ -72,6 +73,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
             break;
         case "golong":
             if (side !== "long") {
+                console.log("close 2")
                 await alpaca.closePosition(symbol).then(async (resp) => {
                     console.log(`Closed your ${side} position in ${symbol}`);
                     console.log(`placing long order`);
@@ -86,6 +88,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 
         case "closelong":
         case "closeshort":
+            console.log("close 3")
             await alpaca.closePosition(symbol).then(async (resp) => {
                 console.log(`Closed your ${side} position in ${symbol}`);
             }).catch(async (err) => {
@@ -125,6 +128,7 @@ const run = async (skipClosing = false) => {
         alpaca.getPosition(symbol).then(async (position) => {
             console.log(`Gain/Loss in ${symbol}:`, position.unrealized_pl)
             if (Number(position.unrealized_pl) >= parseInt(config.tradeableAssets[symbol].target * config.tradeableAssets[symbol].qty)) {
+                console.log("close 4")
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
