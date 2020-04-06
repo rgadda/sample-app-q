@@ -58,7 +58,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
     switch (signal) {
         case "goshort":
             if (side !== "short") {
-                console.log("close 1")
+                console.log("close 1", side)
                 await alpaca.closePosition(symbol)
                     .then(async (resp) => {
                         console.log(`Closed your ${side} position in ${symbol}`);
@@ -132,9 +132,11 @@ const run = async (skipClosing = false) => {
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
+            console.log("act 1")
             await actOnSignal(signal, symbol, qty, position.side);
         }).catch(async (err) => {
             // return if data older than 15 mins
+            console.log("act 2")
             await actOnSignal(signal, symbol, qty);
         })
     })
