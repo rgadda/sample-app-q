@@ -34,9 +34,9 @@ const buySellSignal = (data) => {
     const HA = new TI.HeikinAshi(input)
     const macd = new TI.MACD({
         values: HA.getResult().close,
-        fastPeriod: 12,
-        slowPeriod: 26,
-        signalPeriod: 9,
+        fastPeriod: 36,
+        slowPeriod: 72,
+        signalPeriod: 27,
         SimpleMAOscillator: true,
         SimpleMASignal: true
     }).getResult()

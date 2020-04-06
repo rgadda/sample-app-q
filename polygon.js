@@ -9,7 +9,7 @@ const getMinuteData = (symbol, interval) => {
     const today = moment().subtract(1, 'day').format('YYYY-MM-DD');
     const tomorrow = moment().add(1, 'day').format('YYYY-MM-DD');
     // console.log(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?unadjusted=true&apiKey=${POLYGON_KEY}&limit=100`)
-    return fetch(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?apiKey=${POLYGON_KEY}&resultsCount=50`)
+    return fetch(`https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?apiKey=${POLYGON_KEY}&resultsCount=200`)
         .then(async res => {
             const jsonObj = await res.json();
             if (!jsonObj.results) {
