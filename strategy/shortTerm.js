@@ -136,7 +136,7 @@ const run = async (skipClosing = false) => {
             await actOnSignal(signal, symbol, qty, position.side);
         }).catch(async (err) => {
             // return if data older than 15 mins
-            console.log("act 2")
+            console.log(`${symbol}: act 2, ${signal}`, err)
             await actOnSignal(signal, symbol, qty);
         })
     })
@@ -154,4 +154,4 @@ module.exports = {
     test: test,
     run: run
 }
-// run(true)
+run(true)
