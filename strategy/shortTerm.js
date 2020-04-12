@@ -41,24 +41,23 @@ const buySellSignal = (data) => {
         SimpleMASignal: true
     }).getResult()
 
-    const histogram1 = macd[macd.length - 1].histogram;
-    const histogram2 = macd[macd.length - 2].histogram;
-    console.log(histogram1, histogram2)
-    if (histogram1 > 0 && histogram2 < 0) {
-        return 'golong'
+    const currentDataSet = macd[macd.length - 1];
+    const previousDataSet = macd[macd.length - 2];
+    if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
+        return 'golong';
     }
-    if (histogram1 < 0 && histogram2 > 0) {
-        return 'goshort'
+    if (currentDataSet.MACD > currentDataSet.signal && currentDataSet.histogram < previousDataSet.histogram) {
+        return 'goshort';
     }
     return 'wait'
 }
 
 async function actOnSignal(signal, symbol, qty, side = false) {
-    // console.log(`Signal for ${symbol}: ${signal}`)
+    console.log(`Line 57: Signal for ${symbol}: ${signal}`)
     switch (signal) {
         case "goshort":
             if (side !== "short") {
-                console.log("close 1", side)
+                console.log(`Line 61: close 1, ${side}, ${signal}`)
                 await alpaca.closePosition(symbol)
                     .then(async (resp) => {
                         console.log(`Closed your ${side} position in ${symbol}`);
@@ -73,7 +72,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
             break;
         case "golong":
             if (side !== "long") {
-                console.log("close 2")
+                console.log(`Line 76: close 2, ${side}, ${signal}`)
                 await alpaca.closePosition(symbol).then(async (resp) => {
                     console.log(`Closed your ${side} position in ${symbol}`);
                     console.log(`placing long order`);
@@ -88,7 +87,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 
         case "closelong":
         case "closeshort":
-            console.log("close 3")
+            console.log(`Line 91: close 3, ${side}, ${signal}`)
             await alpaca.closePosition(symbol).then(async (resp) => {
                 console.log(`Closed your ${side} position in ${symbol}`);
             }).catch(async (err) => {
@@ -117,26 +116,24 @@ const run = async (skipClosing = false) => {
     console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
     _.forEach(_.keys(config.tradeableAssets), async (symbol) => {
         let dataset = await helperFunctions.getData(symbol, config.tradeableAssets[symbol].minutes);
-        if (dataset.results.length < 10 || parseInt(dataset.results[dataset.results.length - 1].diff) > config.tradeableAssets[symbol].minutes + 1) {
+        if (parseInt(dataset.results[dataset.results.length - 1].diff) > config.tradeableAssets[symbol].minutes + 1) {
             console.log(`No data for ${symbol}`)
             return;
         }
         const qty = config.tradeableAssets[symbol].qty;
-        // console.log(`Data.lenght: ${ dataset.results.length } `)
         const signal = buySellSignal(dataset.results);
         console.log(`****** Signal: ${signal}`)
         alpaca.getPosition(symbol).then(async (position) => {
-            console.log(`Gain/Loss in ${symbol}:`, position.unrealized_pl)
+            console.log(`Line: 131, Gain/Loss in ${symbol}:`, position.unrealized_pl)
             if (Number(position.unrealized_pl) >= parseInt(config.tradeableAssets[symbol].target * config.tradeableAssets[symbol].qty)) {
-                console.log("close 4")
+                console.log(`Line 133: close 4, ${position.side}, ${signal}`)
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
             console.log("act 1")
             await actOnSignal(signal, symbol, qty, position.side);
         }).catch(async (err) => {
-            // return if data older than 15 mins
-            console.log(`${symbol}: act 2, ${signal}`)
+            console.log(`Line 141: act 2, ${signal}`)
             await actOnSignal(signal, symbol, qty);
         })
     })
@@ -154,4 +151,4 @@ module.exports = {
     test: test,
     run: run
 }
-run(true)
+// run(true)
