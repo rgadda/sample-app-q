@@ -105,10 +105,6 @@ async function actOnSignal(signal, symbol, qty, side = false) {
     }
 }
 
-const symbolOpenOrder = (symbol, orders) => {
-    _.filter(orders, (order) => order.symbol === symbol)
-}
-
 const run = async (skipClosing = false) => {
     const beginningTime = moment('9:40am', 'h:mma');
     const stopTrading = moment('3:50pm', 'h:mma');
@@ -136,8 +132,7 @@ const run = async (skipClosing = false) => {
         console.log(`****** Signal: ${signal}`)
         alpaca.getPosition(symbol).then(async (position) => {
             console.log(`Line: 131, Gain/Loss in ${symbol}:`, position.unrealized_pl)
-            console.log(openOrders)
-            if (!_.filter(openOrders, (order) => order.symbol === symbol)) {
+            if (_.filter(openOrders, (order) => order.symbol === symbol).length === 0) {
                 console.log(`NO OPEN ORDERS FOR ${symbol}`)
                 await alpaca.createOrder({
                     symbol,
@@ -167,7 +162,10 @@ const run = async (skipClosing = false) => {
 
 const test = async function () {
     // let data = await helperFunctions.getData(['AAPL'], '15Min', 25);
-    const account = await alpaca.getAccount();
+    const openOrders = await alpaca.getOrders({ status: 'open' });
+    console.log(openOrders)
+    const fil = _.filter(openOrders, (order) => order.symbol === 'TSLA')
+    console.log(_.filter(openOrders, (order) => order.symbol === 'TSLA').length)
     // const account = await alpaca.getAccount();
 
 }
@@ -176,4 +174,5 @@ module.exports = {
     test: test,
     run: run
 }
-run(true)
+// run(true)
+// test()
