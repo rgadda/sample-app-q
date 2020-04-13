@@ -120,7 +120,7 @@ const run = async (skipClosing = false) => {
     }
     // const account = await alpaca.getAccount()
     // console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
-    const openOrders = await alpaca.getOrders({ status: 'open' });
+    // const openOrders = await alpaca.getOrders({ status: 'open' });
     _.forEach(_.keys(config.tradeableAssets), async (symbol) => {
         let dataset = await helperFunctions.getData(symbol, config.tradeableAssets[symbol].minutes);
         if (parseInt(dataset.results[dataset.results.length - 1].diff) > config.tradeableAssets[symbol].minutes + 1) {
@@ -131,21 +131,10 @@ const run = async (skipClosing = false) => {
         const signal = buySellSignal(dataset.results);
         console.log(`****** Signal: ${signal}`)
         alpaca.getPosition(symbol).then(async (position) => {
-            console.log(`Line: 131, Gain/Loss in ${symbol}:`, position.unrealized_pl)
-            if (_.filter(openOrders, (order) => order.symbol === symbol).length === 0) {
-                console.log(`NO OPEN ORDERS FOR ${symbol}`)
-                await alpaca.createOrder({
-                    symbol,
-                    qty,
-                    side: position.side === 'long' ? 'sell' : 'buy',
-                    type: 'limit',
-                    limit_price: parseFloat(position.avg_entry_price + config.tradeableAssets[symbol].target),
-                    time_in_force: 'day',
-                }).then(() => {
-                    console.log(`###################################`)
-                    console.log("Market order of | " + quantity + " " + stock + " " + side + " | placed. " + parseFloat(position.avg_entry_price + config.tradeableAssets[symbol].target));
-                    console.log(`###################################`)
-                })
+            if (Number(position.unrealized_pl) >= parseInt(config.tradeableAssets[symbol].target * config.tradeableAssets[symbol].qty)) {
+                console.log(`Line 133(${symbol}): close 4, ${position.side}, ${signal}`)
+                console.log("closing position as target hit", position.unrealized_pl)
+                return alpaca.closePosition(position.symbol)
             }
             console.log(`Line 139(${symbol}): act 1, ${signal}`)
             await actOnSignal(signal, symbol, qty, position.side);
@@ -165,7 +154,6 @@ const test = async function () {
     const openOrders = await alpaca.getOrders({ status: 'open' });
     console.log(openOrders)
     const fil = _.filter(openOrders, (order) => order.symbol === 'TSLA')
-    console.log(_.filter(openOrders, (order) => order.symbol === 'TSLA').length)
     // const account = await alpaca.getAccount();
 
 }
