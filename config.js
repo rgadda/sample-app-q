@@ -6,6 +6,26 @@ module.exports = {
             minutes: 1,
             qty: 20,
             target: 0.5
+        },
+        NVDA: {
+            minutes: 1,
+            qty: 20,
+            target: 0.5
+        },
+        DIA: {
+            minutes: 1,
+            qty: 20,
+            target: 0.35
+        },
+        FB: {
+            minutes: 1,
+            qty: 20,
+            target: 0.35
+        },
+        NFLX: {
+            minutes: 1,
+            qty: 15,
+            target: 0.5
         }
     }
 }
