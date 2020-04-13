@@ -123,11 +123,11 @@ const run = async (skipClosing = false) => {
         console.log(`market closed`)
         return;
     }
-    if (!skipClosing && (moment().isBefore(endTime) || moment().isAfter(stopTrading))) {
-        alpaca.closeAllPositions().catch(err => {
-            console.log(err)
-        })
-    }
+    // if (!skipClosing && (moment().isBefore(endTime) || moment().isAfter(stopTrading))) {
+    //     alpaca.closeAllPositions().catch(err => {
+    //         console.log(err)
+    //     })
+    // }
     const account = await alpaca.getAccount()
     console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
     _.forEach(_.keys(config.tradeableAssets), async (symbol) => {
@@ -170,4 +170,4 @@ module.exports = {
     test: test,
     run: run
 }
-// run(true)
+run(true)
