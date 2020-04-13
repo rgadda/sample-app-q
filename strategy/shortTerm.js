@@ -62,7 +62,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
     switch (signal) {
         case "goshort":
             if (side !== "short") {
-                console.log(`Line 61: close 1, ${side}, ${signal}`)
+                console.log(`Line 61(${symbol}): close 1, ${side}, ${signal}`)
                 await alpaca.closePosition(symbol)
                     .then(async (resp) => {
                         console.log(`Closed your ${side} position in ${symbol}`);
@@ -77,7 +77,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
             break;
         case "golong":
             if (side !== "long") {
-                console.log(`Line 76: close 2, ${side}, ${signal}`)
+                console.log(`Line 76(${symbol}): close 2, ${side}, ${signal}`)
                 await alpaca.closePosition(symbol).then(async (resp) => {
                     console.log(`Closed your ${side} position in ${symbol}`);
                     console.log(`placing long order`);
@@ -92,7 +92,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 
         case "closelong":
         case "closeshort":
-            console.log(`Line 91: close 3, ${side}, ${signal}`)
+            console.log(`Line 91(${symbol}): close 3, ${side}, ${signal}`)
             await alpaca.closePosition(symbol).then(async (resp) => {
                 console.log(`Closed your ${side} position in ${symbol}`);
             }).catch(async (err) => {
@@ -131,7 +131,7 @@ const run = async (skipClosing = false) => {
         alpaca.getPosition(symbol).then(async (position) => {
             console.log(`Line: 131, Gain/Loss in ${symbol}:`, position.unrealized_pl)
             if (Number(position.unrealized_pl) >= parseInt(config.tradeableAssets[symbol].target * config.tradeableAssets[symbol].qty)) {
-                console.log(`Line 133: close 4, ${position.side}, ${signal}`)
+                console.log(`Line 133(${symbol}): close 4, ${position.side}, ${signal}`)
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
