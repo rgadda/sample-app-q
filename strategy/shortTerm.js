@@ -135,10 +135,10 @@ const run = async (skipClosing = false) => {
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
-            console.log("act 1")
+            console.log(`Line 138(${symbol}): act 1, ${signal}`)
             await actOnSignal(signal, symbol, qty, position.side);
         }).catch(async (err) => {
-            console.log(`Line 141: act 2, ${signal}`)
+            console.log(`Line 141(${symbol}): act 2, ${signal}`)
             await actOnSignal(signal, symbol, qty);
         })
     })
