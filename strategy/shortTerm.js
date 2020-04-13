@@ -34,7 +34,7 @@ const buySellSignal = (data) => {
     const macd = new TI.MACD({
         values: input.close,
         fastPeriod: 36,
-        slowPeriod: 72,
+        slowPeriod: 78,
         signalPeriod: 27,
         SimpleMAOscillator: true,
         SimpleMASignal: true
