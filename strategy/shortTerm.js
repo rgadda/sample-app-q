@@ -42,6 +42,7 @@ const buySellSignal = (data) => {
 
     const currentDataSet = macd[macd.length - 1];
     const previousDataSet = macd[macd.length - 2];
+    console.log(currentDataSet.MACD, currentDataSet.signal, currentDataSet.histogram, previousDataSet.histogram)
     if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
         return 'golong';
     }
