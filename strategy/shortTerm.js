@@ -62,7 +62,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
     console.log(`Line 57: Signal for ${symbol}: ${signal}`)
     switch (signal) {
         case "goshort":
-            console.log(`Line 61(${symbol}): close 1, ${side}, ${signal}`)
+            console.log(`Line 65(${symbol}):${side}, ${signal}`)
             await helperFunctions.submitOrder(qty, symbol, "sell");
             // if (side !== "short") {
             //     console.log(`Line 61(${symbol}): close 1, ${side}, ${signal}`)
@@ -79,7 +79,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
             // }
             break;
         case "golong":
-            console.log(`Line 76(${symbol}): close 2, ${side}, ${signal}`)
+            console.log(`Line 82(${symbol}): ${side}, ${signal}`)
             await helperFunctions.submitOrder(qty, symbol, "buy");
             // if (side !== "long") {
             //     console.log(`Line 76(${symbol}): close 2, ${side}, ${signal}`)
@@ -97,7 +97,7 @@ async function actOnSignal(signal, symbol, qty, side = false) {
 
         case "closelong":
         case "closeshort":
-            console.log(`Line 91(${symbol}): close 3, ${side}, ${signal}`)
+            console.log(`Line 100(${symbol}): close 3, ${side}, ${signal}`)
             await alpaca.closePosition(symbol).then(async (resp) => {
                 console.log(`Closed your ${side} position in ${symbol}`);
             }).catch(async (err) => {
@@ -140,10 +140,10 @@ const run = async (skipClosing = false) => {
                 console.log("closing position as target hit", position.unrealized_pl)
                 return alpaca.closePosition(position.symbol)
             }
-            console.log(`Line 138(${symbol}): act 1, ${signal}`)
+            console.log(`Line 143(${symbol}): act 1, ${signal}`)
             await actOnSignal(signal, symbol, qty, position.side);
         }).catch(async (err) => {
-            console.log(`Line 141(${symbol}): act 2, ${signal}`)
+            console.log(`Line 146(${symbol}): act 2, ${signal}`)
             await actOnSignal(signal, symbol, qty);
         })
     })
