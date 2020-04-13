@@ -31,9 +31,8 @@ const buySellSignal = (data) => {
         volume: [],
         timestamp: []
     });
-    const HA = new TI.HeikinAshi(input)
     const macd = new TI.MACD({
-        values: HA.getResult().close,
+        values: input.close,
         fastPeriod: 36,
         slowPeriod: 72,
         signalPeriod: 27,
