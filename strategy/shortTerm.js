@@ -143,6 +143,7 @@ const run = async (skipClosing = false) => {
             console.log(`Line 143(${symbol}): act 1, ${signal}`)
             await actOnSignal(signal, symbol, qty, position.side);
         }).catch(async (err) => {
+            console.log(err.error)
             console.log(`Line 146(${symbol}): act 2, ${signal}`)
             await actOnSignal(signal, symbol, qty);
         })
@@ -161,4 +162,4 @@ module.exports = {
     test: test,
     run: run
 }
-// run(true)
+run(true)
