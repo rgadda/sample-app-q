@@ -46,15 +46,15 @@ const buySellSignal = (data) => {
     if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
         return 'golong';
     }
-    if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram < previousDataSet.histogram) {
-        return 'closelong';
-    }
+    // if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram < previousDataSet.histogram) {
+    //     return 'closelong';
+    // }
     if (currentDataSet.MACD > currentDataSet.signal && currentDataSet.histogram < previousDataSet.histogram) {
         return 'goshort';
     }
-    if (currentDataSet.MACD > currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
-        return 'closeshort';
-    }
+    // if (currentDataSet.MACD > currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
+    //     return 'closeshort';
+    // }
     return 'wait'
 }
 
