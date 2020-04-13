@@ -101,15 +101,15 @@ async function actOnSignal(signal, symbol, qty, side = false) {
             // } 
             break;
 
-        case "closelong":
-        case "closeshort":
-            console.log(`Line 100(${symbol}): close 3, ${side}, ${signal}`)
-            await alpaca.closePosition(symbol).then(async (resp) => {
-                console.log(`Closed your ${side} position in ${symbol}`);
-            }).catch(async (err) => {
-                console.log(`No position to close ${side} in ${symbol}`)
-            });
-            break;
+        // case "closelong":
+        // case "closeshort":
+        //     console.log(`Line 100(${symbol}): close 3, ${side}, ${signal}`)
+        //     await alpaca.closePosition(symbol).then(async (resp) => {
+        //         console.log(`Closed your ${side} position in ${symbol}`);
+        //     }).catch(async (err) => {
+        //         console.log(`No position to close ${side} in ${symbol}`)
+        //     });
+        //     break;
         default:
             !side ? console.log(`Wait for the right trade in ${symbol}`) : console.log(`Hold your ${side} position in ${symbol}`);
     }
@@ -151,7 +151,9 @@ const run = async (skipClosing = false) => {
         }).catch(async (err) => {
             console.log(err.error)
             console.log(`Line 146(${symbol}): act 2, ${signal}`)
-            await actOnSignal(signal, symbol, qty);
+            if (signal !== "wait") {
+                await actOnSignal(signal, symbol, qty);
+            }
         })
     })
 }
@@ -168,4 +170,4 @@ module.exports = {
     test: test,
     run: run
 }
-run(true)
+// run(true)
