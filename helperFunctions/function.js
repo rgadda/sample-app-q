@@ -22,13 +22,17 @@ const addTimeDiff = (data) => {
     return transformedData
 }
 
-const createOrder = async ({ stock, quantity, side }) => {
+const createOrder = async ({ stock, quantity, side, price, target }) => {
     await alpaca.createOrder({
         symbol: stock,
         qty: quantity,
         side: side,
-        type: 'market',
-        time_in_force: 'day',
+        type: "market",
+        time_in_force: "day",
+        order_class: "oto",
+        take_profit: {
+            limit_price: side === "buy" ? parseFloat(price + target) : parseFloat(price - target)
+        }
     }).then(() => {
         console.log(`###################################`)
         console.log("Market order of | " + quantity + " " + stock + " " + side + " | completed.");
@@ -52,7 +56,7 @@ const createOrder = async ({ stock, quantity, side }) => {
  * @param {string} stock 
  * @param {string} side 
  */
-const submitOrder = async (quantity, stock, side, backToBack = false, attempt = 1) => {
+const submitOrder = async (quantity, stock, side, price, target, backToBack = false, attempt = 1) => {
     var prom = new Promise(async (resolve, reject) => {
         if (quantity > 0) {
             if (backToBack) {
@@ -60,13 +64,13 @@ const submitOrder = async (quantity, stock, side, backToBack = false, attempt = 
                 await alpaca.getPosition(stock).then((position) => {
                     if (side !== position.side) {
                         console.log("Position still open")
-                        setTimeout(() => { submitOrder(quantity, stock, side, backToBack, ++attempt) }, 500)
+                        setTimeout(() => { submitOrder(quantity, stock, side, price, target, backToBack, ++attempt) }, 500)
                     }
                 }).catch(async (err) => {
-                    await createOrder({ stock, quantity, side });
+                    await createOrder({ stock, quantity, side, price, target });
                 })
             } else {
-                await createOrder({ stock, quantity, side });
+                await createOrder({ stock, quantity, side, price, target });
             }
 
         }
