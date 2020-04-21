@@ -23,15 +23,20 @@ const addTimeDiff = (data) => {
 }
 
 const createOrder = async ({ stock, quantity, side, price, target }) => {
+
     await alpaca.createOrder({
         symbol: stock,
         qty: quantity,
         side: side,
         type: "market",
         time_in_force: "day",
-        order_class: "oto",
+        order_class: "bracket",
         take_profit: {
             limit_price: side === "buy" ? parseFloat(price + target) : parseFloat(price - target)
+        },
+        stop_loss: {
+            stop_price: side === "buy" ? parseFloat(price - target) : parseFloat(price + target),
+            limit_price: side === "buy" ? parseFloat(price - (target * 2)) : parseFloat(price + (target * 2))
         }
     }).then(() => {
         console.log(`###################################`)
