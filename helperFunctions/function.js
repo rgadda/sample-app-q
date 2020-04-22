@@ -23,7 +23,7 @@ const addTimeDiff = (data) => {
 }
 
 const createOrder = async ({ stock, quantity, side, price, target }) => {
-    console.log({
+    console.log(price, target, {
         symbol: stock,
         qty: quantity,
         side: side,
