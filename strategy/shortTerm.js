@@ -33,27 +33,21 @@ const buySellSignal = (data) => {
     });
     const macd = new TI.MACD({
         values: input.close,
-        fastPeriod: 36,
-        slowPeriod: 78,
-        signalPeriod: 27,
+        fastPeriod: 12,
+        slowPeriod: 26,
+        signalPeriod: 18,
         SimpleMAOscillator: true,
         SimpleMASignal: true
     }).getResult()
 
     const currentDataSet = macd[macd.length - 1];
     const previousDataSet = macd[macd.length - 2];
-    console.log(currentDataSet.MACD, currentDataSet.signal, currentDataSet.histogram, previousDataSet.histogram)
-    if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
+    console.log(currentDataSet.MACD, currentDataSet.signal, previousDataSet.MACD, previousDataSet.signal)
+    if (currentDataSet.MACD > currentDataSet.signal && previousDataSet.MACD < previousDataSet.signal) {
         return 'golong';
     }
-    if (currentDataSet.MACD < currentDataSet.signal && currentDataSet.histogram < previousDataSet.histogram) {
-        return 'closelong';
-    }
-    if (currentDataSet.MACD > currentDataSet.signal && currentDataSet.histogram < previousDataSet.histogram) {
+    if (currentDataSet.MACD < currentDataSet.signal && previousDataSet.MACD > previousDataSet.signal) {
         return 'goshort';
-    }
-    if (currentDataSet.MACD > currentDataSet.signal && currentDataSet.histogram > previousDataSet.histogram) {
-        return 'closeshort';
     }
     return 'wait'
 }
