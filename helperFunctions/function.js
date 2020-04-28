@@ -34,8 +34,8 @@ const createOrder = async ({ stock, quantity, side, price, target }) => {
             limit_price: side === "buy" ? parseFloat(price + target) : parseFloat(price - target)
         },
         stop_loss: {
-            stop_price: side === "buy" ? parseFloat(price - target) : parseFloat(price + target),
-            limit_price: side === "buy" ? parseFloat(price - (target * 2)) : parseFloat(price + (target * 2))
+            stop_price: side === "buy" ? parseFloat(price - (target * 2)) : parseFloat(price + (target * 2)),
+            limit_price: side === "buy" ? parseFloat(price - (target * 4)) : parseFloat(price + (target * 4))
         }
     })
     await alpaca.createOrder({
@@ -49,8 +49,8 @@ const createOrder = async ({ stock, quantity, side, price, target }) => {
             limit_price: side === "buy" ? parseFloat(price + target) : parseFloat(price - target)
         },
         stop_loss: {
-            stop_price: side === "buy" ? parseFloat(price - target) : parseFloat(price + target),
-            limit_price: side === "buy" ? parseFloat(price - (target * 2)) : parseFloat(price + (target * 2))
+            stop_price: side === "buy" ? parseFloat(price - (target * 2)) : parseFloat(price + (target * 2)),
+            limit_price: side === "buy" ? parseFloat(price - (target * 4)) : parseFloat(price + (target * 4))
         }
     }).then(() => {
         console.log(`###################################`)
