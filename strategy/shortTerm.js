@@ -135,10 +135,10 @@ const run = async (skipClosing = false) => {
     // const openOrders = await alpaca.getOrders({ status: 'open' });
     _.forEach(_.keys(config.tradeableAssets), async (symbol) => {
         let dataset = await helperFunctions.getData(symbol, config.tradeableAssets[symbol].minutes);
-        // if (parseInt(dataset.results[dataset.results.length - 1].diff) > config.tradeableAssets[symbol].minutes + 1) {
-        //     console.log(`No data for ${symbol}`)
-        //     return;
-        // }
+        if (parseInt(dataset.results[dataset.results.length - 1].diff) > config.tradeableAssets[symbol].minutes + 1) {
+            console.log(`No data for ${symbol}`)
+            return;
+        }
         const qty = config.tradeableAssets[symbol].qty;
         const signal = buySellSignal(dataset.results);
         const price = dataset.results[dataset.results.length - 1].c
@@ -180,5 +180,5 @@ module.exports = {
     test: test,
     run: run
 }
-run(true)
+// run(true)
 // test()
