@@ -19,6 +19,9 @@ const getIchimokuSignals = (input) => {
         spanPeriod: 52,
         displacement: 26
     }).getResult();
+    if (_.isEmpty(ichimoku)) {
+        return 'wait';
+    }
     console.log(ichimoku[ichimoku.length - 1], input.close[input.close.length - 1])
     const price = input.close[input.close.length - 1];
     const prevPrice = input.close[input.close.length - 2];
