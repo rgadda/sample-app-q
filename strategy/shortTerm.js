@@ -22,7 +22,7 @@ const getIchimokuSignals = (input) => {
     if (_.isEmpty(ichimoku)) {
         return 'wait';
     }
-    console.log(ichimoku[ichimoku.length - 1], input.close[input.close.length - 1])
+    // console.log(ichimoku[ichimoku.length - 1], input.close[input.close.length - 1])
     const price = input.close[input.close.length - 1];
     const prevPrice = input.close[input.close.length - 2];
     const latestIchimokuValues = ichimoku[ichimoku.length - 1];
@@ -193,7 +193,7 @@ const run = async (skipClosing = false) => {
         alpaca.getPosition(symbol).then(async (position) => {
             await actOnSignal(signal, symbol, qty, price, config.tradeableAssets[symbol].target, position.side);
         }).catch(async (err) => {
-            console.log(err.error)
+            console.log(`err: ${err.error} and signal: ${signal}`)
             if (signal !== "wait") {
                 await actOnSignal(signal, symbol, qty, price, config.tradeableAssets[symbol].target);
             }
