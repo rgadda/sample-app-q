@@ -65,7 +65,7 @@ const createOrder = async ({ stock, quantity, side, price, target }) => {
         })
         await cancelAllOrders()
         // await alpaca.closePosition(stock)
-        await setTimeout(() => { submitOrder(quantity, stock, side, true) }, 10000)
+        // await setTimeout(() => { submitOrder(quantity, stock, side, price, target, true) }, 10000)
     });
 }
 
