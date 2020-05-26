@@ -39,18 +39,20 @@ const getIchimokuSignals = (input) => {
     const isPrevPriceAboveConversionLine = prevPrice > previousIchimokuValues.conversion;
     const isPrevPriceAboveBaseLine = prevPrice > previousIchimokuValues.base;
 
-    if (isPriceAboveKumoCloud) {
-        console.log(`price: ${price}, is above Kumo cloud`)
-        if (isPrevPriceAboveBaseLine > isPrevPriceAboveConversionLine && isPriceAboveBaseLine < isPriceAboveConversionLine) {
-            return 'golong';
-        }
+    // if (isPriceAboveKumoCloud) {
+
+    if (isPrevPriceAboveBaseLine > isPrevPriceAboveConversionLine && isPriceAboveBaseLine < isPriceAboveConversionLine) {
+        // console.log(`price: ${price}, is above Kumo cloud`)
+        return 'golong';
+        // }
     }
 
-    if (isPriceBelowKumoCloud) {
-        console.log(`price: ${price}, is below Kumo cloud`)
-        if (isPrevPriceAboveBaseLine < isPrevPriceAboveConversionLine && isPriceAboveBaseLine > isPriceAboveConversionLine) {
-            return 'goshort';
-        }
+    // if (isPriceBelowKumoCloud) {
+
+    if (isPrevPriceAboveBaseLine < isPrevPriceAboveConversionLine && isPriceAboveBaseLine > isPriceAboveConversionLine) {
+        // console.log(`price: ${price}, is below Kumo cloud`)
+        return 'goshort';
+        // }
     }
     return 'wait';
 }
