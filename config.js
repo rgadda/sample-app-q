@@ -7,61 +7,61 @@ module.exports = {
             qty: 25,
             target: 0.5
         },
-        NFLX: {
-            minutes: 1,
-            qty: 25,
-            target: 2
-        },
-        SPY: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        AMZN: {
-            minutes: 1,
-            qty: 5,
-            target: 5
-        },
-        FB: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        TWLO: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        BA: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        BABA: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        MSFT: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        NVDA: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        ULTA: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        },
-        COST: {
-            minutes: 1,
-            qty: 25,
-            target: 0.5
-        }
+        // NFLX: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 2
+        // },
+        // SPY: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // AMZN: {
+        //     minutes: 1,
+        //     qty: 5,
+        //     target: 5
+        // },
+        // FB: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // TWLO: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // BA: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // BABA: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // MSFT: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // NVDA: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // ULTA: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // },
+        // COST: {
+        //     minutes: 1,
+        //     qty: 25,
+        //     target: 0.5
+        // }
     }
 }
 /**
