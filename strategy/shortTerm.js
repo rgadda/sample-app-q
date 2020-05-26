@@ -40,12 +40,14 @@ const getIchimokuSignals = (input) => {
     const isPrevPriceAboveBaseLine = prevPrice > previousIchimokuValues.base;
 
     if (isPriceAboveKumoCloud) {
+        console.log(`price: ${price}, is above Kumo cloud`)
         if (isPrevPriceAboveBaseLine > isPrevPriceAboveConversionLine && isPriceAboveBaseLine < isPriceAboveConversionLine) {
             return 'golong';
         }
     }
 
     if (isPriceBelowKumoCloud) {
+        console.log(`price: ${price}, is below Kumo cloud`)
         if (isPrevPriceAboveBaseLine < isPrevPriceAboveConversionLine && isPriceAboveBaseLine > isPriceAboveConversionLine) {
             return 'goshort';
         }
