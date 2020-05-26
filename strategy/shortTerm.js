@@ -193,7 +193,7 @@ const run = async (skipClosing = false) => {
         alpaca.getPosition(symbol).then(async (position) => {
             await actOnSignal(signal, symbol, qty, price, config.tradeableAssets[symbol].target, position.side);
         }).catch(async (err) => {
-            console.log(`err: ${err.error} and signal: ${signal}`)
+            console.log(`err: ${err.error.message} and signal: ${signal}`)
             if (signal !== "wait") {
                 await actOnSignal(signal, symbol, qty, price, config.tradeableAssets[symbol].target);
             }
