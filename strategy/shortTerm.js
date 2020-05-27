@@ -29,35 +29,30 @@ const getIchimokuSignals = (input) => {
     const previousIchimokuValues = ichimoku[ichimoku.length - 2];
 
     // latest constants
-    // const isPriceAboveKumoCloud = price > latestIchimokuValues.spanA && price > latestIchimokuValues.spanB;
-    // const isPriceBelowKumoCloud = price < latestIchimokuValues.spanA && price < latestIchimokuValues.spanB;
+    const isPriceAboveKumoCloud = price > latestIchimokuValues.spanA && price > latestIchimokuValues.spanB;
+    const isPriceBelowKumoCloud = price < latestIchimokuValues.spanA && price < latestIchimokuValues.spanB;
     // const isPriceAboveConversionLine = price > latestIchimokuValues.conversion;
     // const isPriceAboveBaseLine = price > latestIchimokuValues.base;
-    const isConversionsAboveBase = latestIchimokuValues.conversion > latestIchimokuValues.base;
-    const isConversionsBelowBase = latestIchimokuValues.conversion < latestIchimokuValues.base;
+    // const isConversionsAboveBase = latestIchimokuValues.conversion > latestIchimokuValues.base;
+    // const isConversionsBelowBase = latestIchimokuValues.conversion < latestIchimokuValues.base;
+
 
     // previous constants
     // const isPrevPriceAboveKumoCloud = prevPrice > previousIchimokuValues.spanA && prevPrice > previousIchimokuValues.spanB;
     // const isPrevPriceAboveConversionLine = prevPrice > previousIchimokuValues.conversion;
     // const isPrevPriceAboveBaseLine = prevPrice > previousIchimokuValues.base;
     // const isPrevPriceBelowBaseLine = prevPrice < previousIchimokuValues.base;
-    const isPrevConversionsAboveBase = previousIchimokuValues.conversion > previousIchimokuValues.base;
-    const isPrevConversionsBelowBase = previousIchimokuValues.conversion < previousIchimokuValues.base;
+    // const isPrevConversionsAboveBase = previousIchimokuValues.conversion > previousIchimokuValues.base;
+    // const isPrevConversionsBelowBase = previousIchimokuValues.conversion < previousIchimokuValues.base;
 
-    // if (isPriceAboveKumoCloud) {
-    // console.log(isPrevPriceAboveBaseLine, isPrevPriceAboveConversionLine, isPriceAboveBaseLine, isPriceAboveConversionLine)
-    if (isConversionsAboveBase && isPrevConversionsBelowBase) {
-        // console.log(`price: ${price}, is above Kumo cloud`)
+    const isPriceCrossingAboveBaseLine = price > latestIchimokuValues.base && prevPrice < previousIchimokuValues.base;
+    if (isPriceCrossingAboveBaseLine && isPriceAboveKumoCloud) {
         return 'golong';
-        // }
     }
 
-    // if (isPriceBelowKumoCloud) {
-
-    if (isConversionsBelowBase && isPrevConversionsAboveBase) {
-        // console.log(`price: ${price}, is below Kumo cloud`)
+    const isPriceCrossingBelowBaseLine = price < latestIchimokuValues.base && prevPrice > previousIchimokuValues.base;
+    if (isPriceCrossingBelowBaseLine && isPriceBelowKumoCloud) {
         return 'goshort';
-        // }
     }
     return 'wait';
 }
