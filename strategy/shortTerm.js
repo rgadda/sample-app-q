@@ -47,7 +47,7 @@ const getIchimokuSignals = (input) => {
 
     const isPriceCrossingAboveBaseLine = price > latestIchimokuValues.base && prevPrice < previousIchimokuValues.base;
     const isPriceCrossingBelowBaseLine = price < latestIchimokuValues.base && prevPrice > previousIchimokuValues.base;
-    console.log(`price: ${price}
+    console.log(`price: ${price}, latestIchimokuValues.base: ${latestIchimokuValues.base}, previousIchimokuValues.base: ${previousIchimokuValues.base}
                     isPriceCrossingAboveBaseLine: ${isPriceCrossingAboveBaseLine}
                     isPriceAboveKumoCloud: ${isPriceAboveKumoCloud}
                     isPriceCrossingBelowBaseLine: ${isPriceCrossingBelowBaseLine}
