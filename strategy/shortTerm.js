@@ -31,6 +31,26 @@ const getIchimokuSignals = (input) => {
     // latest constants
     const isPriceAboveKumoCloud = price > latestIchimokuValues.spanA && price > latestIchimokuValues.spanB;
     const isPriceBelowKumoCloud = price < latestIchimokuValues.spanA && price < latestIchimokuValues.spanB;
+    const isBaseAboveKumoCloud = latestIchimokuValues.base > latestIchimokuValues.spanA && latestIchimokuValues.base > latestIchimokuValues.spanB;
+    const isBaseBelowKumoCloud = latestIchimokuValues.base < latestIchimokuValues.spanA && latestIchimokuValues.base < latestIchimokuValues.spanB;
+    const isPriceCrossingAboveBaseLine = price > latestIchimokuValues.base && prevPrice < previousIchimokuValues.base;
+    const isPriceCrossingBelowBaseLine = price < latestIchimokuValues.base && prevPrice > previousIchimokuValues.base;
+
+    console.log(`price: ${price}, latestIchimokuValues.base: ${latestIchimokuValues.base}, previousIchimokuValues.base: ${previousIchimokuValues.base}
+                    isPriceCrossingAboveBaseLine: ${isPriceCrossingAboveBaseLine}
+                    isPriceAboveKumoCloud: ${isPriceAboveKumoCloud}
+                    isPriceCrossingBelowBaseLine: ${isPriceCrossingBelowBaseLine}
+                    isPriceBelowKumoCloud: ${isPriceBelowKumoCloud}`)
+    if (isBaseAboveKumoCloud && isPriceCrossingAboveBaseLine && isPriceAboveKumoCloud) {
+        return 'golong';
+    }
+
+
+    if (isBaseBelowKumoCloud && isPriceCrossingBelowBaseLine && isPriceBelowKumoCloud) {
+        return 'goshort';
+    }
+    return 'wait';
+
     // const isPriceAboveConversionLine = price > latestIchimokuValues.conversion;
     // const isPriceAboveBaseLine = price > latestIchimokuValues.base;
     // const isConversionsAboveBase = latestIchimokuValues.conversion > latestIchimokuValues.base;
@@ -45,22 +65,6 @@ const getIchimokuSignals = (input) => {
     // const isPrevConversionsAboveBase = previousIchimokuValues.conversion > previousIchimokuValues.base;
     // const isPrevConversionsBelowBase = previousIchimokuValues.conversion < previousIchimokuValues.base;
 
-    const isPriceCrossingAboveBaseLine = price > latestIchimokuValues.base && prevPrice < previousIchimokuValues.base;
-    const isPriceCrossingBelowBaseLine = price < latestIchimokuValues.base && prevPrice > previousIchimokuValues.base;
-    console.log(`price: ${price}, latestIchimokuValues.base: ${latestIchimokuValues.base}, previousIchimokuValues.base: ${previousIchimokuValues.base}
-                    isPriceCrossingAboveBaseLine: ${isPriceCrossingAboveBaseLine}
-                    isPriceAboveKumoCloud: ${isPriceAboveKumoCloud}
-                    isPriceCrossingBelowBaseLine: ${isPriceCrossingBelowBaseLine}
-                    isPriceBelowKumoCloud: ${isPriceBelowKumoCloud}`)
-    if (isPriceCrossingAboveBaseLine && isPriceAboveKumoCloud) {
-        return 'golong';
-    }
-
-
-    if (isPriceCrossingBelowBaseLine && isPriceBelowKumoCloud) {
-        return 'goshort';
-    }
-    return 'wait';
 }
 
 const buySellSignal = (data) => {
