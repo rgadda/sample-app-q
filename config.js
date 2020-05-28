@@ -5,7 +5,7 @@ module.exports = {
         AAPL: {
             minutes: 1,
             qty: 25,
-            target: 1
+            target: 0.5
         },
         // NFLX: {
         //     minutes: 1,
