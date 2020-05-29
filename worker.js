@@ -1,6 +1,7 @@
 const amqp = require("amqp-connection-manager");
 const shortTerm = require("./strategy/shortTerm");
 const moment = require("moment");
+const config = require("../config");
 
 const AMQP_URL = process.env.CLOUDAMQP_URL || "amqp://localhost";
 if (!AMQP_URL) process.exit(1);
@@ -66,7 +67,15 @@ function onMessage(data) {
       console.log(`Time: ${moment().format()}`);
       console.log(`${message.taskName} is being executed`);
       console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
-      shortTerm.run();
+      shortTerm.run(config.shortTerm);
+      break;
+    case "mid term":
+      // do another thing....
+      console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+      console.log(`Time: ${moment().format()}`);
+      console.log(`${message.taskName} is being executed`);
+      console.log(`@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@`);
+      shortTerm.run(config.midTerm);
       break;
 
     default:
