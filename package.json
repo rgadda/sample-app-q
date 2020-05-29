@@ -4,7 +4,8 @@
   "description": "sample test code",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "prettify": "./node_modules/.bin/prettier --write '**/*.{js,jsx}'"
   },
   "repository": {
     "type": "git",
@@ -25,6 +26,9 @@
     "moment": "^2.24.0",
     "node-fetch": "^2.6.0",
     "polygon.io": "^1.0.0",
-    "technicalindicators": "^3.1.0"
+    "technicalindicators": "^3.1.0",
+    "eslint-config-prettier": "2.9.0",
+    "eslint-plugin-prettier": "2.6.0",
+    "prettier": "^1.16.4"
   }
 }

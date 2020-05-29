@@ -1,4 +1,3 @@
-
 // example of cron
 // var job = new CronJob('10 * * * * *', function () {
 //     console.log('You will see this message every 10 seconds');
@@ -38,14 +37,14 @@ repeat: 1
 */
 
 const jobs = [
-    {
-        name: "Implementing Short Term Strategy",
-        message: { "taskName": "short term", "queue": "worker-queue" },  // message in json format
-        cronTime: "*/1 * * * *",
-        repeat: 1
-    }
+  {
+    name: "Implementing Short Term Strategy",
+    message: { taskName: "short term", queue: "worker-queue" }, // message in json format
+    cronTime: "*/1 * * * *",
+    repeat: 1
+  }
 ];
 
 module.exports = {
-    jobs: jobs
-}
+  jobs: jobs
+};
