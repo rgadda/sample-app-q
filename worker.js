@@ -1,7 +1,7 @@
 const amqp = require("amqp-connection-manager");
 const shortTerm = require("./strategy/shortTerm");
 const moment = require("moment");
-const config = require("../config");
+const config = require("./config");
 
 const AMQP_URL = process.env.CLOUDAMQP_URL || "amqp://localhost";
 if (!AMQP_URL) process.exit(1);
