@@ -25,6 +25,9 @@ const getIchimokuSignals = input => {
   }
   // console.log(ichimoku[ichimoku.length - 1], input.close[input.close.length - 1])
   const price = input.close[input.close.length - 1];
+  const isPriceBelowLaggingSpan = price < input.close[input.close.length - 26];
+  const isPriceAboveLaggingSpan = price > input.close[input.close.length - 26];
+
   const prevPrice = input.close[input.close.length - 2];
   const latestIchimokuValues = {
     conversion: _.round(ichimoku[ichimoku.length - 1].conversion, 3),
@@ -67,7 +70,9 @@ const getIchimokuSignals = input => {
   );
   console.log(`Price: ${price}`);
   console.log(`Base: ${latestIchimokuValues.base}`);
+  console.log(`isPriceAboveLaggingSpan: ${isPriceAboveLaggingSpan}`);
   if (
+    isPriceAboveLaggingSpan &&
     isBaseAboveKumoCloud &&
     isPriceAboveKumoCloud &&
     isPriceCrossingAboveBaseLine
@@ -76,6 +81,7 @@ const getIchimokuSignals = input => {
   }
 
   if (
+    isPriceBelowLaggingSpan &&
     isBaseBelowKumoCloud &&
     isPriceCrossingBelowBaseLine &&
     isPriceBelowKumoCloud
