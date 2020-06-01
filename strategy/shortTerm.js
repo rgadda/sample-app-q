@@ -9,16 +9,16 @@ const TI = require("technicalindicators");
 const alpaca = new Alpaca({
   keyId: process.env.ALPACA_KEY,
   secretKey: process.env.ALPACA_SECRET,
-  paper: config.PAPER,
+  paper: config.PAPER
 });
 
-const getIchimokuSignals = (input) => {
+const getIchimokuSignals = input => {
   const ichimoku = new TI.IchimokuCloud({
     ...input,
     conversionPeriod: 9,
     basePeriod: 26,
     spanPeriod: 52,
-    displacement: 26,
+    displacement: 26
   }).getResult();
   if (_.isEmpty(ichimoku)) {
     return "wait";
@@ -30,13 +30,13 @@ const getIchimokuSignals = (input) => {
     conversion: _.round(ichimoku[ichimoku.length - 1].conversion, 3),
     base: _.round(ichimoku[ichimoku.length - 1].base, 3),
     spanA: _.round(ichimoku[ichimoku.length - 1].spanA, 3),
-    spanB: _.round(ichimoku[ichimoku.length - 1].spanB, 3),
+    spanB: _.round(ichimoku[ichimoku.length - 1].spanB, 3)
   };
   const previousIchimokuValues = {
     conversion: _.round(ichimoku[ichimoku.length - 2].conversion, 3),
     base: _.round(ichimoku[ichimoku.length - 2].base, 3),
     spanA: _.round(ichimoku[ichimoku.length - 2].spanA, 3),
-    spanB: _.round(ichimoku[ichimoku.length - 2].spanB, 3),
+    spanB: _.round(ichimoku[ichimoku.length - 2].spanB, 3)
   };
 
   // latest constants
@@ -85,7 +85,7 @@ const getIchimokuSignals = (input) => {
   return "wait";
 };
 
-const buySellSignal = (data) => {
+const buySellSignal = data => {
   const input = _.reduce(
     data,
     (acc, candle) => {
@@ -95,7 +95,7 @@ const buySellSignal = (data) => {
         low: [...acc.low, candle.l],
         high: [...acc.high, candle.h],
         volume: [...acc.volume, candle.v],
-        timestamp: [...acc.timestamp, candle.t],
+        timestamp: [...acc.timestamp, candle.t]
       };
     },
     {
@@ -104,7 +104,7 @@ const buySellSignal = (data) => {
       low: [],
       high: [],
       volume: [],
-      timestamp: [],
+      timestamp: []
     }
   );
 
@@ -119,7 +119,7 @@ async function actOnSignal(signal, symbol, qty, price, target, side = false) {
         console.log(`Line 66(${symbol}): close 1, ${side}, ${signal}`);
         await alpaca
           .closePosition(symbol)
-          .then(async (resp) => {
+          .then(async resp => {
             console.log(`Closed your ${side} position in ${symbol}`);
             console.log("placing short order");
             setTimeout(() => {
@@ -133,7 +133,7 @@ async function actOnSignal(signal, symbol, qty, price, target, side = false) {
               );
             }, 500);
           })
-          .catch(async (err) => {
+          .catch(async err => {
             await helperFunctions.submitOrder(
               qty,
               symbol,
@@ -154,7 +154,7 @@ async function actOnSignal(signal, symbol, qty, price, target, side = false) {
         console.log(`Line 81(${symbol}): close 2, ${side}, ${signal}`);
         await alpaca
           .closePosition(symbol)
-          .then(async (resp) => {
+          .then(async resp => {
             console.log(`Closed your ${side} position in ${symbol}`);
             console.log(`placing long order`);
             setTimeout(() => {
@@ -168,7 +168,7 @@ async function actOnSignal(signal, symbol, qty, price, target, side = false) {
               );
             }, 500);
           })
-          .catch(async (err) => {
+          .catch(async err => {
             await helperFunctions.submitOrder(
               qty,
               symbol,
@@ -190,10 +190,10 @@ async function actOnSignal(signal, symbol, qty, price, target, side = false) {
       console.log(`Line 96(${symbol}): close 3, ${side}, ${signal}`);
       await alpaca
         .closePosition(symbol)
-        .then(async (resp) => {
+        .then(async resp => {
           console.log(`Closed your ${side} position in ${symbol}`);
         })
-        .catch(async (err) => {
+        .catch(async err => {
           console.log(`No position to close ${side} in ${symbol}`);
         });
       break;
@@ -220,14 +220,14 @@ const run = async (tradeableAssets, skipClosing = false) => {
     moment().isBefore(endTime) &&
     moment().isAfter(stopTrading)
   ) {
-    alpaca.closeAllPositions().catch((err) => {
+    alpaca.closeAllPositions().catch(err => {
       console.log(err);
     });
   }
   // const account = await alpaca.getAccount()
   // console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
   // const openOrders = await alpaca.getOrders({ status: 'open' });
-  _.forEach(_.keys(tradeableAssets), async (symbol) => {
+  _.forEach(_.keys(tradeableAssets), async symbol => {
     let dataset = await helperFunctions.getData(
       symbol,
       tradeableAssets[symbol].minutes
@@ -243,10 +243,10 @@ const run = async (tradeableAssets, skipClosing = false) => {
     const qty = tradeableAssets[symbol].qty;
     const signal = buySellSignal(dataset.results);
     const price = dataset.results[dataset.results.length - 1].c;
-    console.log(`****** Signal: ${signal}`);
+    console.log(`****** Symbol: ${symbol}, Signal: ${signal}`);
     alpaca
       .getPosition(symbol)
-      .then(async (position) => {
+      .then(async position => {
         await actOnSignal(
           signal,
           symbol,
@@ -256,7 +256,7 @@ const run = async (tradeableAssets, skipClosing = false) => {
           position.side
         );
       })
-      .catch(async (err) => {
+      .catch(async err => {
         console.log(`err: ${err.error.message} and signal: ${signal}`);
         if (signal !== "wait") {
           await actOnSignal(
@@ -271,17 +271,17 @@ const run = async (tradeableAssets, skipClosing = false) => {
   });
 };
 
-const test = async function () {
+const test = async function() {
   // let data = await helperFunctions.getData(['AAPL'], '15Min', 25);
   const openOrders = await alpaca.getOrders({ status: "open" });
   console.log(openOrders);
-  const fil = _.filter(openOrders, (order) => order.symbol === "TSLA");
+  const fil = _.filter(openOrders, order => order.symbol === "TSLA");
   // const account = await alpaca.getAccount();
 };
 
 module.exports = {
   test: test,
-  run: run,
+  run: run
 };
 // execute short term
 // run(config.shortTerm, true);
