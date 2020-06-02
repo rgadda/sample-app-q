@@ -9,7 +9,7 @@ module.exports = {
     NVDA: {
       minutes: 1,
       qty: 25,
-      target: 0.5
+      target: 0.75
     },
     FB: {
       minutes: 1,

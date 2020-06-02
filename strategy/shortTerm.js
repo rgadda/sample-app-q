@@ -216,13 +216,6 @@ const run = async (tradeableAssets, skipClosing = false) => {
   const endTime = moment("3:55pm", "h:mma");
   if (
     !skipClosing &&
-    (moment().isBefore(beginningTime) || moment().isAfter(stopTrading))
-  ) {
-    console.log(`market closed`);
-    return;
-  }
-  if (
-    !skipClosing &&
     moment().isBefore(endTime) &&
     moment().isAfter(stopTrading)
   ) {
@@ -230,6 +223,14 @@ const run = async (tradeableAssets, skipClosing = false) => {
       console.log(err);
     });
   }
+  if (
+    !skipClosing &&
+    (moment().isBefore(beginningTime) || moment().isAfter(stopTrading))
+  ) {
+    console.log(`market closed`);
+    return;
+  }
+
   // const account = await alpaca.getAccount()
   // console.log(`Account: ${account.cash} and ${account.portfolio_value}`)
   // const openOrders = await alpaca.getOrders({ status: 'open' });
