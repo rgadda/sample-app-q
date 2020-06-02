@@ -25,8 +25,8 @@ module.exports = {
     },
     NFLX: {
       minutes: 5,
-      qty: 10,
-      target: 5
+      qty: 15,
+      target: 2
     },
     MSFT: {
       minutes: 5,
@@ -34,6 +34,11 @@ module.exports = {
       target: 1
     },
     QQQ: {
+      minutes: 5,
+      qty: 20,
+      target: 1
+    },
+    GS: {
       minutes: 5,
       qty: 20,
       target: 1
