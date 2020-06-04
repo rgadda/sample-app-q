@@ -213,7 +213,7 @@ async function actOnSignal(signal, symbol, qty, price, target, side = false) {
 const run = async (tradeableAssets, skipClosing = false) => {
   const beginningTime = moment("9:35am", "h:mma");
   const stopTrading = moment("3:55pm", "h:mma");
-  const endTime = moment("3:55pm", "h:mma");
+  const endTime = moment("4:00pm", "h:mma");
   if (
     !skipClosing &&
     moment().isBefore(endTime) &&
