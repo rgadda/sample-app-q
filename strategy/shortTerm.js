@@ -254,7 +254,7 @@ const run = async (tradeableAssets, skipClosing = false) => {
     alpaca
       .getPosition(symbol)
       .then(async position => {
-        console.log("Hold your position");
+        console.log(`Hold your position: ${symbol} - ${signal}`);
         // await actOnSignal(
         //   signal,
         //   symbol,
