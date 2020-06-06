@@ -23,7 +23,6 @@ const getIchimokuSignals = input => {
   if (_.isEmpty(ichimoku)) {
     return "wait";
   }
-  // console.log(ichimoku[ichimoku.length - 1], input.close[input.close.length - 1])
   const price = input.close[input.close.length - 1];
   const isPriceBelowLaggingSpan = price < input.close[input.close.length - 26];
   const isPriceAboveLaggingSpan = price > input.close[input.close.length - 26];
@@ -65,12 +64,12 @@ const getIchimokuSignals = input => {
     price < latestIchimokuValues.base &&
     prevPrice > previousIchimokuValues.base;
 
-  console.log(
-    `Kumo Cloud: ${latestIchimokuValues.spanA} - ${latestIchimokuValues.spanB}`
-  );
-  console.log(`Price: ${price}`);
-  console.log(`Base: ${latestIchimokuValues.base}`);
-  console.log(`isPriceAboveLaggingSpan: ${isPriceAboveLaggingSpan}`);
+  // console.log(
+  //   `Kumo Cloud: ${latestIchimokuValues.spanA} - ${latestIchimokuValues.spanB}`
+  // );
+  // console.log(`Price: ${price}`);
+  // console.log(`Base: ${latestIchimokuValues.base}`);
+  // console.log(`isPriceAboveLaggingSpan: ${isPriceAboveLaggingSpan}`);
   if (
     isPriceAboveLaggingSpan &&
     isBaseAboveKumoCloud &&
@@ -118,90 +117,13 @@ const buySellSignal = data => {
 };
 
 async function actOnSignal(signal, symbol, qty, price, target, side = false) {
-  console.log(`Line 57: Signal for ${symbol}: ${signal}`);
   switch (signal) {
     case "goshort":
-      if (side !== "short") {
-        console.log(`Line 66(${symbol}): close 1, ${side}, ${signal}`);
-        await alpaca
-          .closePosition(symbol)
-          .then(async resp => {
-            console.log(`Closed your ${side} position in ${symbol}`);
-            console.log("placing short order");
-            setTimeout(() => {
-              helperFunctions.submitOrder(
-                qty,
-                symbol,
-                "sell",
-                price,
-                target,
-                true
-              );
-            }, 500);
-          })
-          .catch(async err => {
-            await helperFunctions.submitOrder(
-              qty,
-              symbol,
-              "sell",
-              price,
-              target
-            );
-          });
-      } else {
-        !side
-          ? console.log(`Wait for the right trade in ${symbol}`)
-          : console.log(`Hold your ${side} position in ${symbol}`);
-      }
-      // await helperFunctions.submitOrder(qty, symbol, "sell", price, target);
+      helperFunctions.submitOrder(qty, symbol, "sell", price, target, true);
       break;
     case "golong":
-      if (side !== "long") {
-        console.log(`Line 81(${symbol}): close 2, ${side}, ${signal}`);
-        await alpaca
-          .closePosition(symbol)
-          .then(async resp => {
-            console.log(`Closed your ${side} position in ${symbol}`);
-            console.log(`placing long order`);
-            setTimeout(() => {
-              helperFunctions.submitOrder(
-                qty,
-                symbol,
-                "buy",
-                price,
-                target,
-                true
-              );
-            }, 500);
-          })
-          .catch(async err => {
-            await helperFunctions.submitOrder(
-              qty,
-              symbol,
-              "buy",
-              price,
-              target
-            );
-          });
-      } else {
-        !side
-          ? console.log(`Wait for the right trade in ${symbol}`)
-          : console.log(`Hold your ${side} position in ${symbol}`);
-      }
+      helperFunctions.submitOrder(qty, symbol, "buy", price, target, true);
       // helperFunctions.submitOrder(qty, symbol, "buy", price, target);
-      break;
-
-    case "closelong":
-    case "closeshort":
-      console.log(`Line 96(${symbol}): close 3, ${side}, ${signal}`);
-      await alpaca
-        .closePosition(symbol)
-        .then(async resp => {
-          console.log(`Closed your ${side} position in ${symbol}`);
-        })
-        .catch(async err => {
-          console.log(`No position to close ${side} in ${symbol}`);
-        });
       break;
     default:
       !side
@@ -214,13 +136,9 @@ const run = async (tradeableAssets, skipClosing = false) => {
   const beginningTime = moment("9:35am", "h:mma");
   const stopTrading = moment("3:55pm", "h:mma");
   const endTime = moment("4:00pm", "h:mma");
-  if (
-    !skipClosing &&
-    moment().isBefore(endTime) &&
-    moment().isAfter(stopTrading)
-  ) {
-    alpaca.closeAllPositions().catch(err => {
-      console.log(err);
+  if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
+    alpaca.closeAllPositions().then(resp => {
+      console.log(resp);
     });
   }
   if (
@@ -253,19 +171,10 @@ const run = async (tradeableAssets, skipClosing = false) => {
     console.log(`****** Symbol: ${symbol}, Signal: ${signal}`);
     alpaca
       .getPosition(symbol)
-      .then(async position => {
+      .then(() => {
         console.log(`Hold your position: ${symbol} - ${signal}`);
-        // await actOnSignal(
-        //   signal,
-        //   symbol,
-        //   qty,
-        //   price,
-        //   tradeableAssets[symbol].target,
-        //   position.side
-        // );
       })
       .catch(async err => {
-        console.log(`err: ${err.error.message} and signal: ${signal}`);
         if (signal !== "wait") {
           await actOnSignal(
             signal,
@@ -280,17 +189,22 @@ const run = async (tradeableAssets, skipClosing = false) => {
 };
 
 const test = async function() {
-  // let data = await helperFunctions.getData(['AAPL'], '15Min', 25);
-  const openOrders = await alpaca.getOrders({ status: "open" });
-  console.log(openOrders);
-  const fil = _.filter(openOrders, order => order.symbol === "TSLA");
-  // const account = await alpaca.getAccount();
+  const stopTrading = moment("3:55pm", "h:mma");
+  const endTime = moment("4:00pm", "h:mma");
+  if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
+    console.log("I am here");
+    alpaca.closeAllPositions().then(resp => {
+      console.log(resp);
+    });
+  }
 };
 
 module.exports = {
   test: test,
   run: run
 };
+
+test();
 // execute short term
 // run(config.shortTerm, true);
 

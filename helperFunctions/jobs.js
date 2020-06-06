@@ -36,13 +36,16 @@ repeat: 1
 
 */
 
-const jobs = [
-  {
+/**
+ * 
+ * {
     name: "Implementing Short Term Strategy",
     message: { taskName: "short term", queue: "worker-queue" }, // message in json format
-    cronTime: "*/1 * * * *",
+    cronTime: "*\/1 * * * *",
     repeat: 1
   },
+ */
+const jobs = [
   {
     name: "Implementing Short Term Strategy",
     message: { taskName: "mid term", queue: "worker-queue" }, // message in json format
