@@ -137,9 +137,11 @@ const run = async (tradeableAssets, skipClosing = false) => {
   const stopTrading = moment("3:55pm", "h:mma");
   const endTime = moment("4:00pm", "h:mma");
   if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
-    alpaca.closeAllPositions().then(resp => {
-      console.log(resp);
-    });
+    alpaca.cancelAllOrders().then(() =>
+      alpaca.closeAllPositions().then(resp => {
+        console.log(resp);
+      })
+    );
   }
   if (
     !skipClosing &&
@@ -197,6 +199,7 @@ const test = async function() {
       console.log(resp);
     });
   }
+  alpaca.cancelAllOrders();
 };
 
 module.exports = {
@@ -204,7 +207,7 @@ module.exports = {
   run: run
 };
 
-test();
+// test();
 // execute short term
 // run(config.shortTerm, true);
 
