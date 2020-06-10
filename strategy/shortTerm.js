@@ -24,8 +24,8 @@ const getIchimokuSignals = input => {
     return "wait";
   }
   const price = input.close[input.close.length - 1];
-  const isPriceBelowLaggingSpan = price < input.close[input.close.length - 26];
-  const isPriceAboveLaggingSpan = price > input.close[input.close.length - 26];
+  // const isPriceBelowLaggingSpan = price < input.close[input.close.length - 26];
+  // const isPriceAboveLaggingSpan = price > input.close[input.close.length - 26];
 
   const prevPrice = input.close[input.close.length - 2];
   const latestIchimokuValues = {
@@ -71,7 +71,6 @@ const getIchimokuSignals = input => {
   // console.log(`Base: ${latestIchimokuValues.base}`);
   // console.log(`isPriceAboveLaggingSpan: ${isPriceAboveLaggingSpan}`);
   if (
-    isPriceAboveLaggingSpan &&
     isBaseAboveKumoCloud &&
     isPriceAboveKumoCloud &&
     isPriceCrossingAboveBaseLine
@@ -80,7 +79,6 @@ const getIchimokuSignals = input => {
   }
 
   if (
-    isPriceBelowLaggingSpan &&
     isBaseBelowKumoCloud &&
     isPriceCrossingBelowBaseLine &&
     isPriceBelowKumoCloud
@@ -116,14 +114,37 @@ const buySellSignal = data => {
   return getIchimokuSignals(input);
 };
 
-async function actOnSignal(signal, symbol, qty, price, target, side = false) {
+async function actOnSignal(
+  signal,
+  symbol,
+  qty,
+  price,
+  target,
+  riskFactor,
+  side = false
+) {
   switch (signal) {
     case "goshort":
-      helperFunctions.submitOrder(qty, symbol, "sell", price, target, true);
+      helperFunctions.submitOrder(
+        qty,
+        symbol,
+        "sell",
+        price,
+        target,
+        riskFactor,
+        true
+      );
       break;
     case "golong":
-      helperFunctions.submitOrder(qty, symbol, "buy", price, target, true);
-      // helperFunctions.submitOrder(qty, symbol, "buy", price, target);
+      helperFunctions.submitOrder(
+        qty,
+        symbol,
+        "buy",
+        price,
+        target,
+        riskFactor,
+        true
+      );
       break;
     default:
       !side
@@ -183,7 +204,8 @@ const run = async (tradeableAssets, skipClosing = false) => {
             symbol,
             qty,
             price,
-            tradeableAssets[symbol].target
+            tradeableAssets[symbol].target,
+            tradeableAssets[symbol].riskFactor
           );
         }
       });

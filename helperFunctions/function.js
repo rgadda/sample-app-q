@@ -22,7 +22,14 @@ const addTimeDiff = data => {
   return transformedData;
 };
 
-const createOrder = async ({ stock, quantity, side, price, target }) => {
+const createOrder = async ({
+  stock,
+  quantity,
+  side,
+  price,
+  target,
+  riskFactor
+}) => {
   console.log(price, target, {
     symbol: stock,
     qty: quantity,
@@ -37,12 +44,12 @@ const createOrder = async ({ stock, quantity, side, price, target }) => {
     stop_loss: {
       stop_price:
         side === "buy"
-          ? parseFloat(price - target * 2)
-          : parseFloat(price + target * 2),
+          ? parseFloat(price - target * riskFactor)
+          : parseFloat(price + target * riskFactor),
       limit_price:
         side === "buy"
-          ? parseFloat(price - target * 4)
-          : parseFloat(price + target * 4)
+          ? parseFloat(price - target * (riskFactor + 1))
+          : parseFloat(price + target * (riskFactor + 1))
     }
   });
   await alpaca
@@ -62,12 +69,12 @@ const createOrder = async ({ stock, quantity, side, price, target }) => {
       stop_loss: {
         stop_price:
           side === "buy"
-            ? parseFloat(price - target * 2)
-            : parseFloat(price + target * 2),
+            ? parseFloat(price - target * riskFactor)
+            : parseFloat(price + target * riskFactor),
         limit_price:
           side === "buy"
-            ? parseFloat(price - target * 4)
-            : parseFloat(price + target * 4)
+            ? parseFloat(price - target * (riskFactor + 1))
+            : parseFloat(price + target * (riskFactor + 1))
       }
     })
     .then(() => {
@@ -117,6 +124,7 @@ const submitOrder = async (
   side,
   price,
   target,
+  riskFactor,
   backToBack = false,
   attempt = 1
 ) => {
@@ -145,10 +153,17 @@ const submitOrder = async (
             }
           })
           .catch(async err => {
-            await createOrder({ stock, quantity, side, price, target });
+            await createOrder({
+              stock,
+              quantity,
+              side,
+              price,
+              target,
+              riskFactor
+            });
           });
       } else {
-        await createOrder({ stock, quantity, side, price, target });
+        await createOrder({ stock, quantity, side, price, target, riskFactor });
       }
     } else {
       console.log(
