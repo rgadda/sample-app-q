@@ -68,7 +68,9 @@ const getIchimokuSignals = input => {
   //   `Kumo Cloud: ${latestIchimokuValues.spanA} - ${latestIchimokuValues.spanB}`
   // );
   // console.log(`Price: ${price}`);
-  // console.log(`Base: ${latestIchimokuValues.base}`);
+  console.log(
+    `Conversion: ${latestIchimokuValues.conversion}Base: ${latestIchimokuValues.base}`
+  );
   // console.log(`isPriceAboveLaggingSpan: ${isPriceAboveLaggingSpan}`);
   if (
     isBaseAboveKumoCloud &&
