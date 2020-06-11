@@ -69,12 +69,12 @@ const createOrder = async ({
       stop_loss: {
         stop_price:
           side === "buy"
-            ? parseFloat(price - price * target)
-            : parseFloat(price + price * target),
+            ? parseFloat(price - price * riskFactor)
+            : parseFloat(price + price * riskFactor),
         limit_price:
           side === "buy"
-            ? parseFloat(price - price * target * 1.25)
-            : parseFloat(price + price * target * 1.25)
+            ? parseFloat(price - price * riskFactor * 1.25)
+            : parseFloat(price + price * riskFactor * 1.25)
       }
     })
     .then(() => {
