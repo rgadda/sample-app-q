@@ -131,7 +131,7 @@ const buySellSignal = data => {
   const cci = getCCI(input);
   if (
     cci.result[cci.result.length - 2] < 0 &&
-    cci.ema[cci.result.length - 2] > -100 &&
+    cci.ema[cci.result.length - 2] > -110 &&
     cci.result[cci.result.length - 2] > cci.ema[cci.result.length - 2] &&
     cci.result[cci.result.length - 3] < cci.ema[cci.result.length - 3] &&
     cci.ema[cci.result.length - 2] > cci.ema[cci.result.length - 3]
@@ -141,7 +141,7 @@ const buySellSignal = data => {
 
   if (
     cci.result[cci.result.length - 2] > 0 &&
-    cci.ema[cci.result.length - 2] < 100 &&
+    cci.ema[cci.result.length - 2] < 110 &&
     cci.result[cci.result.length - 2] < cci.ema[cci.result.length - 2] &&
     cci.result[cci.result.length - 3] > cci.ema[cci.result.length - 3] &&
     cci.ema[cci.result.length - 2] < cci.ema[cci.result.length - 3]
