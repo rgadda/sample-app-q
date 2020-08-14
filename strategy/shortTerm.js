@@ -271,4 +271,4 @@ module.exports = {
 // run(config.shortTerm, true);
 
 // execute mid term
-run(config.midTerm, true);
+// run(config.midTerm, true);
