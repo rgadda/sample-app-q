@@ -4,6 +4,8 @@ const Alpaca = require("@alpacahq/alpaca-trade-api");
 const helperFunctions = require("../helperFunctions/function");
 const moment = require("moment");
 const TI = require("technicalindicators");
+const SMA = require("technicalindicators").SMA;
+const EMA = require("technicalindicators").EMA;
 
 // alpaca trade api connector
 const alpaca = new Alpaca({
@@ -90,6 +92,17 @@ const getIchimokuSignals = input => {
   return "wait";
 };
 
+const getCCI = data => {
+  const cci = new TI.CCI({
+    ...data,
+    period: 20
+  });
+  return {
+    result: cci.result,
+    ema: EMA.calculate({ period: 9, values: cci.result })
+  };
+};
+
 const buySellSignal = data => {
   const input = _.reduce(
     data,
@@ -113,7 +126,29 @@ const buySellSignal = data => {
     }
   );
 
-  return getIchimokuSignals(input);
+  // return getIchimokuSignals(input);
+  // console.log(getCCI(input));
+  const cci = getCCI(input);
+  if (
+    cci.result[cci.result.length - 2] < 0 &&
+    cci.ema[cci.result.length - 2] > -100 &&
+    cci.result[cci.result.length - 2] > cci.ema[cci.result.length - 2] &&
+    cci.result[cci.result.length - 3] < cci.ema[cci.result.length - 3] &&
+    cci.ema[cci.result.length - 2] > cci.ema[cci.result.length - 3]
+  ) {
+    return "golong";
+  }
+
+  if (
+    cci.result[cci.result.length - 2] > 0 &&
+    cci.ema[cci.result.length - 2] < 100 &&
+    cci.result[cci.result.length - 2] < cci.ema[cci.result.length - 2] &&
+    cci.result[cci.result.length - 3] > cci.ema[cci.result.length - 3] &&
+    cci.ema[cci.result.length - 2] < cci.ema[cci.result.length - 3]
+  ) {
+    return "golong";
+  }
+  return "wait";
 };
 
 async function actOnSignal(
@@ -236,4 +271,4 @@ module.exports = {
 // run(config.shortTerm, true);
 
 // execute mid term
-// run(config.midTerm, true);
+run(config.midTerm, true);
