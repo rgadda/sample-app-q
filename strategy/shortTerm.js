@@ -129,9 +129,15 @@ const buySellSignal = data => {
   // return getIchimokuSignals(input);
   // console.log(getCCI(input));
   const cci = getCCI(input);
+  console.log(
+    cci.result[cci.result.length - 1],
+    cci.result[cci.result.length - 2],
+    cci.ema[cci.ema.length - 1],
+    cci.ema[cci.ema.length - 2]
+  );
   if (
     cci.result[cci.result.length - 1] < 0 &&
-    cci.ema[cci.result.length - 1] > -110 &&
+    cci.ema[cci.ema.length - 1] > -110 &&
     cci.result[cci.result.length - 1] > cci.ema[cci.ema.length - 1] &&
     cci.result[cci.result.length - 2] < cci.ema[cci.ema.length - 2] &&
     cci.ema[cci.ema.length - 1] > cci.ema[cci.ema.length - 2]
@@ -141,7 +147,7 @@ const buySellSignal = data => {
 
   if (
     cci.result[cci.result.length - 1] > 0 &&
-    cci.ema[cci.result.length - 1] < 110 &&
+    cci.ema[cci.ema.length - 1] < 110 &&
     cci.result[cci.result.length - 1] < cci.ema[cci.ema.length - 1] &&
     cci.result[cci.result.length - 2] > cci.ema[cci.ema.length - 2] &&
     cci.ema[cci.ema.length - 1] < cci.ema[cci.ema.length - 2]
@@ -271,4 +277,4 @@ module.exports = {
 // run(config.shortTerm, true);
 
 // execute mid term
-run(config.midTerm, true);
+// run(config.midTerm, true);
