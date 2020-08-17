@@ -16,7 +16,7 @@ const getMinuteData = (symbol, interval) => {
   //   `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?apiKey=${POLYGON_KEY}&resultsCount=200`
   // );
   return fetch(
-    `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?apiKey=${POLYGON_KEY}&resultsCount=200`
+    `https://api.polygon.io/v2/aggs/ticker/${symbol}/range/${interval}/minute/${today}/${tomorrow}?apiKey=${POLYGON_KEY}`
   )
     .then(async res => {
       const jsonObj = await res.json();

@@ -130,21 +130,21 @@ const buySellSignal = data => {
   // console.log(getCCI(input));
   const cci = getCCI(input);
   if (
-    cci.result[cci.result.length - 2] < 0 &&
-    cci.ema[cci.result.length - 2] > -110 &&
-    cci.result[cci.result.length - 2] > cci.ema[cci.result.length - 2] &&
-    cci.result[cci.result.length - 3] < cci.ema[cci.result.length - 3] &&
-    cci.ema[cci.result.length - 2] > cci.ema[cci.result.length - 3]
+    cci.result[cci.result.length - 1] < 0 &&
+    cci.ema[cci.result.length - 1] > -110 &&
+    cci.result[cci.result.length - 1] > cci.ema[cci.ema.length - 1] &&
+    cci.result[cci.result.length - 2] < cci.ema[cci.ema.length - 2] &&
+    cci.ema[cci.ema.length - 1] > cci.ema[cci.ema.length - 2]
   ) {
     return "golong";
   }
 
   if (
-    cci.result[cci.result.length - 2] > 0 &&
-    cci.ema[cci.result.length - 2] < 110 &&
-    cci.result[cci.result.length - 2] < cci.ema[cci.result.length - 2] &&
-    cci.result[cci.result.length - 3] > cci.ema[cci.result.length - 3] &&
-    cci.ema[cci.result.length - 2] < cci.ema[cci.result.length - 3]
+    cci.result[cci.result.length - 1] > 0 &&
+    cci.ema[cci.result.length - 1] < 110 &&
+    cci.result[cci.result.length - 1] < cci.ema[cci.ema.length - 1] &&
+    cci.result[cci.result.length - 2] > cci.ema[cci.ema.length - 2] &&
+    cci.ema[cci.ema.length - 1] < cci.ema[cci.ema.length - 2]
   ) {
     return "golong";
   }
@@ -271,4 +271,4 @@ module.exports = {
 // run(config.shortTerm, true);
 
 // execute mid term
-// run(config.midTerm, true);
+run(config.midTerm, true);
