@@ -129,15 +129,9 @@ const buySellSignal = data => {
   // return getIchimokuSignals(input);
   // console.log(getCCI(input));
   const cci = getCCI(input);
-  console.log(
-    cci.result[cci.result.length - 1],
-    cci.result[cci.result.length - 2],
-    cci.ema[cci.ema.length - 1],
-    cci.ema[cci.ema.length - 2]
-  );
   if (
     cci.result[cci.result.length - 1] < 0 &&
-    cci.ema[cci.ema.length - 1] > -110 &&
+    cci.ema[cci.ema.length - 1] > -150 &&
     cci.result[cci.result.length - 1] > cci.ema[cci.ema.length - 1] &&
     cci.result[cci.result.length - 2] < cci.ema[cci.ema.length - 2] &&
     cci.ema[cci.ema.length - 1] > cci.ema[cci.ema.length - 2]
@@ -147,7 +141,7 @@ const buySellSignal = data => {
 
   if (
     cci.result[cci.result.length - 1] > 0 &&
-    cci.ema[cci.ema.length - 1] < 110 &&
+    cci.ema[cci.ema.length - 1] < 150 &&
     cci.result[cci.result.length - 1] < cci.ema[cci.ema.length - 1] &&
     cci.result[cci.result.length - 2] > cci.ema[cci.ema.length - 2] &&
     cci.ema[cci.ema.length - 1] < cci.ema[cci.ema.length - 2]
@@ -200,13 +194,13 @@ const run = async (tradeableAssets, skipClosing = false) => {
   const beginningTime = moment("9:35am", "h:mma");
   const stopTrading = moment("3:55pm", "h:mma");
   const endTime = moment("4:00pm", "h:mma");
-  if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
-    alpaca.cancelAllOrders().then(() =>
-      alpaca.closeAllPositions().then(resp => {
-        console.log(resp);
-      })
-    );
-  }
+  // if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
+  //   alpaca.cancelAllOrders().then(() =>
+  //     alpaca.closeAllPositions().then(resp => {
+  //       console.log(resp);
+  //     })
+  //   );
+  // }
   if (
     !skipClosing &&
     (moment().isBefore(beginningTime) || moment().isAfter(stopTrading))
