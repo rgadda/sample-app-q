@@ -146,7 +146,7 @@ const buySellSignal = data => {
     cci.result[cci.result.length - 2] > cci.ema[cci.ema.length - 2] &&
     cci.ema[cci.ema.length - 1] < cci.ema[cci.ema.length - 2]
   ) {
-    return "golong";
+    return "goshort";
   }
   return "wait";
 };
@@ -192,15 +192,15 @@ async function actOnSignal(
 
 const run = async (tradeableAssets, skipClosing = false) => {
   const beginningTime = moment("9:35am", "h:mma");
-  const stopTrading = moment("3:55pm", "h:mma");
+  const stopTrading = moment("3:44pm", "h:mma");
   const endTime = moment("4:00pm", "h:mma");
-  // if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
-  //   alpaca.cancelAllOrders().then(() =>
-  //     alpaca.closeAllPositions().then(resp => {
-  //       console.log(resp);
-  //     })
-  //   );
-  // }
+  if (moment().isBefore(endTime) && moment().isAfter(stopTrading)) {
+    alpaca.cancelAllOrders().then(() =>
+      alpaca.closeAllPositions().then(resp => {
+        console.log(resp);
+      })
+    );
+  }
   if (
     !skipClosing &&
     (moment().isBefore(beginningTime) || moment().isAfter(stopTrading))
