@@ -99,7 +99,7 @@ const getCCI = data => {
   });
   return {
     result: cci.result,
-    ema: EMA.calculate({ period: 9, values: cci.result })
+    ema: EMA.calculate({ period: 26, values: cci.result })
   };
 };
 
