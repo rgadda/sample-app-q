@@ -30,28 +30,6 @@ const createOrder = async ({
   target,
   riskFactor
 }) => {
-  console.log(price, target, {
-    symbol: stock,
-    qty: quantity,
-    side: side,
-    type: "market",
-    time_in_force: "day",
-    order_class: "bracket",
-    take_profit: {
-      limit_price:
-        side === "buy" ? parseFloat(price + target) : parseFloat(price - target)
-    },
-    stop_loss: {
-      stop_price:
-        side === "buy"
-          ? parseFloat(price - target * riskFactor)
-          : parseFloat(price + target * riskFactor),
-      limit_price:
-        side === "buy"
-          ? parseFloat(price - target * (riskFactor + 1))
-          : parseFloat(price + target * (riskFactor + 1))
-    }
-  });
   await alpaca
     .createOrder({
       symbol: stock,
