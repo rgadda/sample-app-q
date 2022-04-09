@@ -23,7 +23,7 @@
     "amqplib": "^0.5.5",
     "cron": "^1.8.2",
     "lodash": ">=4.17.19",
-    "moment": "^2.24.0",
+    "moment": "^2.29.2",
     "node-fetch": "^2.6.0",
     "polygon.io": "^1.0.0",
     "technicalindicators": "^3.1.0",
